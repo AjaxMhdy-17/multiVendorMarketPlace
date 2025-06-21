@@ -12,7 +12,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('admin/dashboard', function () {
-    return view('admin.dashboard.index');
+    $data['title'] = "dashboard";
+    return view('admin.dashboard.index', $data);
 })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 
 
