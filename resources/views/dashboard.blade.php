@@ -4,6 +4,8 @@
 
 @section('content')
 
+    @include('user.layout.welcomeBalance')
+
     <div class="dashboard-body__item">
         <div class="row gy-4">
             <div class="col-xl-3 col-sm-6">

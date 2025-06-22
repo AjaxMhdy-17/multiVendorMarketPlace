@@ -10,6 +10,12 @@
     @include('user.layout.cssLibs')
     @include('user.layout.cssStyle')
 
+    <style>
+        .active {
+            color: var(--colorSuccess);
+        }
+    </style>
+
 </head>
 
 <body>
@@ -44,7 +50,9 @@
         <button type="button" class="close-button"> <i class="las la-times"></i> </button>
         <div class="mobile-menu__inner">
             <a href="index.html" class="mobile-menu__logo">
-                <img src="assets/images/logo/logo-two.png" alt="Logo" class="white-version">
+                <img src="{{ asset('assets/user/images/logo/logo-two.png') }}" alt="Logo" class="white-version">
+
+
             </a>
             <div class="mobile-menu__menu">
                 <div class="header-right__inner d-lg-none my-3 gap-1 d-flex flx-align">
@@ -56,7 +64,7 @@
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <img src="assets/images/icons/user.svg" alt="">
+                            <img src="{{ asset('assets/user/images/icons/user.svg') }}" alt="">
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Sign Up</a></li>
@@ -157,15 +165,7 @@
                 <div class="dashboard-body__content">
 
                     <!-- welcome balance Content Start -->
-                    <div class="welcome-balance mt-2 mb-40 flx-between gap-2">
-                        <div class="welcome-balance__left">
-                            <h4 class="welcome-balance__title mb-0">Welcome back! Michel</h4>
-                        </div>
-                        <div class="welcome-balance__right flx-align gap-2">
-                            <span class="welcome-balance__text fw-500 text-heading">Available Balance:</span>
-                            <h4 class="welcome-balance__balance mb-0">$580.00</h4>
-                        </div>
-                    </div>
+                    
                     <!-- welcome balance Content End -->
 
                     <div class="dashboard-body__item-wrapper">
