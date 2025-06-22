@@ -171,12 +171,9 @@
                     <a href="#"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit()"
                         class="dropdown-item">Logout</a>
-
-
                     <form id="logout-form" action="{{ route('admin.logout') }}" method="post" class="hidden">
                         @csrf
                     </form>
-
                 </div>
             </div>
         </div>
