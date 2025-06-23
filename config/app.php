@@ -1,5 +1,8 @@
 <?php
 
+use App\Providers\UserServiceProvider;
+use Illuminate\Support\ServiceProvider;
+
 return [
 
     /*
@@ -104,6 +107,13 @@ return [
             explode(',', env('APP_PREVIOUS_KEYS', ''))
         ),
     ],
+
+
+
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        UserServiceProvider::class,
+    ])->toArray(),
+
 
     /*
     |--------------------------------------------------------------------------

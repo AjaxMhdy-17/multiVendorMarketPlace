@@ -18,7 +18,9 @@ Route::get('admin/dashboard', function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::resource('/profile', ProfileController::class);
+    Route::prefix('profile')->as('profile.')->group(function () {
+        Route::resource('user', ProfileController::class);
+    });
 });
 
 

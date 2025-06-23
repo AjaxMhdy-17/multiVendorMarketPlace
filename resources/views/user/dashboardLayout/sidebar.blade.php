@@ -20,8 +20,8 @@
                 </a>
             </li>
             <li class="sidebar-list__item">
-                <a href="{{ route('profile.index') }}"
-                    class="sidebar-list__link {{ request()->routeIs('profile.index') ? 'active' : '' }}">
+                <a href="{{ route('profile.user.edit', ['user' => $user->id]) }}"
+                    class="sidebar-list__link {{ request()->routeIs('profile.user.edit', ['user' => $user->id]) ? 'active' : '' }}">
                     <span class="sidebar-list__icon">
                         <i class="ti ti-user"></i>
                     </span>

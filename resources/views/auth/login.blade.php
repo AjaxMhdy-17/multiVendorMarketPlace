@@ -78,10 +78,6 @@
 
     @include('user.sections.categoryMenu')
 
-
-    @include('auth.breadCrumb')
-
-
     <section class="breadcrumb border-bottom p-0 d-block section-bg position-relative z-index-1"
         style="background: url({{ asset('assets/user/images/thumbs/breadcrumb_bg.jpg') }});">
         <div class="breadcrumb-two">

@@ -7,79 +7,7 @@
     <div class="profile">
         <div class="row gy-4">
             <div class="col-xxl-3 col-xl-4">
-                <div class="profile-info">
-                    <div class="profile-info__inner mb-40 text-center">
-
-                        <div class="avatar-upload mb-24">
-                            <div class="avatar-edit">
-                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg">
-                                <label for="imageUpload">
-                                    <img src="assets/images/icons/camera.svg" alt="">
-                                </label>
-                            </div>
-                            <div class="avatar-preview">
-                                <div id="imagePreview">
-                                </div>
-                            </div>
-                        </div>
-
-                        <h5 class="profile-info__name mb-1">Michel Smith</h5>
-                        <span class="profile-info__designation font-14">Exclusive Author</span>
-                    </div>
-
-                    <ul class="profile-info-list">
-                        <li class="profile-info-list__item">
-                            <span class="profile-info-list__content flx-align flex-nowrap gap-2">
-                                <i class="ti ti-user"></i>
-                                <span class="text text-heading fw-500">Username</span>
-                            </span>
-                            <span class="profile-info-list__info">michel15</span>
-                        </li>
-                        <li class="profile-info-list__item">
-                            <span class="profile-info-list__content flx-align flex-nowrap gap-2">
-                                <i class="ti ti-mail-forward"></i>
-                                <span class="text text-heading fw-500">Email</span>
-                            </span>
-                            <span class="profile-info-list__info">michel15@gmail.com</span>
-                        </li>
-                        <li class="profile-info-list__item">
-                            <span class="profile-info-list__content flx-align flex-nowrap gap-2">
-                                <i class="ti ti-phone-plus"></i>
-                                <span class="text text-heading fw-500">Phone</span>
-                            </span>
-                            <span class="profile-info-list__info">+880 15589 236 45</span>
-                        </li>
-                        <li class="profile-info-list__item">
-                            <span class="profile-info-list__content flx-align flex-nowrap gap-2">
-                                <i class="ti ti-map-pin"></i>
-                                <span class="text text-heading fw-500">Country</span>
-                            </span>
-                            <span class="profile-info-list__info">Bangladesh</span>
-                        </li>
-                        <li class="profile-info-list__item">
-                            <span class="profile-info-list__content flx-align flex-nowrap gap-2">
-                                <i class="ti ti-currency-dollar"></i>
-                                <span class="text text-heading fw-500">Balance</span>
-                            </span>
-                            <span class="profile-info-list__info">$0.00 USD</span>
-                        </li>
-                        <li class="profile-info-list__item">
-                            <span class="profile-info-list__content flx-align flex-nowrap gap-2">
-                                <i class="ti ti-calendar-month"></i>
-                                <span class="text text-heading fw-500">Member Since</span>
-                            </span>
-                            <span class="profile-info-list__info">Jan, 01, 2024</span>
-                        </li>
-                        <li class="profile-info-list__item">
-                            <span class="profile-info-list__content flx-align flex-nowrap gap-2">
-                                <i class="ti ti-basket-check"></i>
-                                <span class="text text-heading fw-500">Purchased</span>
-                            </span>
-                            <span class="profile-info-list__info">0 items</span>
-                        </li>
-                    </ul>
-
-                </div>
+                @include('user.panel.profile.profileCard')
             </div>
             <div class="col-xxl-9 col-xl-8">
                 <div class="dashboard-card">
@@ -104,96 +32,87 @@
                             </li>
                         </ul>
                     </div>
-
                     <div class="profile-info-content">
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-personalInfo" role="tabpanel"
                                 aria-labelledby="pills-personalInfo-tab" tabindex="0">
-                                <form action="#" autocomplete="off">
+                                <form action="{{ route('profile.user.update', ['user' => $user->id]) }}" method="post"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+
                                     <div class="row">
                                         <div class="col-sm-6 col-xs-6">
                                             <div class="form_box">
-                                                <label for="fName"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">First
+                                                <label for="name"
+                                                    class="form-label mb-2 font-18 font-heading fw-600">Full
                                                     Name</label>
-                                                <input type="text" class="common-input border" id="fName"
-                                                    value="Michel" placeholder="First Name">
+                                                <input type="text" class="common-input border" id="name"
+                                                    value="{{ optional($user)->name }}" name="name" />
+                                                <x-input-error :messages="$errors->get('name')" class="mt-1" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-xs-6">
                                             <div class="form_box">
-                                                <label for="lastNamee"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Last
-                                                    Name</label>
-                                                <input type="text" class="common-input border" id="lastNamee"
-                                                    value="Smith" placeholder="Last Name">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="phonee"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Phone
-                                                    Number</label>
-                                                <input type="tel" class="common-input border" id="phonee"
-                                                    value="+880 15589 236 45" placeholder="Phone Number">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="emailAdddd"
+                                                <label for="email"
                                                     class="form-label mb-2 font-18 font-heading fw-600">Email
-                                                    Address</label>
-                                                <input type="email" class="common-input border" id="emailAdddd"
-                                                    value="michel15@gmail.com" placeholder="Email Address">
+                                                </label>
+                                                <input type="email" name="email" class="common-input border"
+                                                    id="email" value="{{ optional($user)->email }}" readonly>
+                                                <x-input-error :messages="$errors->get('email')" class="mt-1" />
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="cityyy"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">City</label>
-                                                <div class="select-has-icon">
-                                                    <select class="common-input border" id="cityyy">
-                                                        <option value="1">Dhaka</option>
-                                                        <option value="1">Chandpur</option>
-                                                        <option value="1">Comilla</option>
-                                                        <option value="1">Rangpur</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box"> <label for="Stateee"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">State/Region</label>
-                                                <div class="select-has-icon">
-                                                    <select class="common-input border" id="Stateee">
-                                                        <option value="1">USA</option>
-                                                        <option value="1">Bangladesh</option>
-                                                        <option value="1">India</option>
-                                                        <option value="1">Pakistan</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="Postcodeee"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Postcode</label>
-                                                <input type="text" class="common-input border" id="Postcodeee"
-                                                    value="1219" placeholder="Post Code">
-                                            </div>
-                                        </div>
+
                                         <div class="col-sm-6 col-xs-6">
                                             <div class="form_box">
                                                 <label for="Countryyy"
                                                     class="form-label mb-2 font-18 font-heading fw-600">Country</label>
                                                 <div class="select-has-icon">
-                                                    <select class="common-input border" id="Countryyy">
+                                                    <select class="common-input border" name="country" id="Countryyy">
                                                         <option value="1">USA</option>
                                                         <option value="1">Bangladesh</option>
-                                                        <option value="1">India</option>
-                                                        <option value="1">Pakistan</option>
+                                                        <option value="1">Europe</option>
+                                                        <option value="1">Africa</option>
+                                                    </select>
+                                                    <x-input-error :messages="$errors->get('country')" class="mt-1" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 col-xs-6">
+                                            <div class="form_box">
+                                                <label for="cityyy"
+                                                    class="form-label mb-2 font-18 font-heading fw-600">City</label>
+                                                <div class="select-has-icon">
+                                                    <select class="common-input border" name="city" id="cityyy">
+                                                        <option value="1">Dhaka</option>
+                                                        <option value="1">Chandpur</option>
+                                                        <option value="1">Comilla</option>
+                                                        <option value="1">Chittagong</option>
                                                     </select>
                                                 </div>
+                                                <x-input-error :messages="$errors->get('city')" class="mt-1" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 col-xs-6">
+                                            <div class="form_box">
+                                                <label for="address"
+                                                    class="form-label mb-2 font-18 font-heading fw-600">Address
+                                                </label>
+                                                <input type="text" class="common-input border" id="address"
+                                                    value="{{ old('address') }}" />
+                                                <x-input-error :messages="$errors->get('address')" class="mt-1" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 col-xs-6">
+                                            <div class="form_box">
+                                                <label for="avatar"
+                                                    class="form-label mb-2 font-18 font-heading fw-600">Avatar</label>
+                                                <input type="file" class="common-input border" name="avatar"
+                                                    id="avatar" value="{{ old('avatar') }}" />
+                                                <x-input-error :messages="$errors->get('avatar')" class="mt-1" />
                                             </div>
                                         </div>
 

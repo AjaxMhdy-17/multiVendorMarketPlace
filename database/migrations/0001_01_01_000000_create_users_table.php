@@ -24,9 +24,9 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('city')->nullable();
             $table->string('address')->nullable();
-            $table->string('key_status')->default(false);
-            $table->string('total_sales')->default(0);
-            $table->string('withdraw_method_id')->nullable();
+            $table->boolean('kyc_status')->default(false);
+            $table->integer('total_sales')->default(0);
+            $table->foreignId('withdraw_method_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
