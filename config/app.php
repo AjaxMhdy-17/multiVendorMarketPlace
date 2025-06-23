@@ -2,6 +2,7 @@
 
 use App\Providers\UserServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use Intervention\Image\ImageManager;
 
 return [
 
@@ -113,6 +114,7 @@ return [
     'providers' => ServiceProvider::defaultProviders()->merge([
         UserServiceProvider::class,
     ])->toArray(),
+
 
 
     /*

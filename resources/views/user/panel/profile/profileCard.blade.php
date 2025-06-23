@@ -5,7 +5,7 @@
             <div class="avatar-edit">
                 <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg">
                 <label for="imageUpload">
-                    <img src="assets/images/icons/camera.svg" alt="">
+                    <img src="{{ asset('assets/user/images/icons/camera.svg') }}" alt="camera"/>
                 </label>
             </div>
             <div class="avatar-preview">

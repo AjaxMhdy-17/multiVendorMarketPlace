@@ -58,7 +58,7 @@
                                                     class="form-label mb-2 font-18 font-heading fw-600">Email
                                                 </label>
                                                 <input type="email" name="email" class="common-input border"
-                                                    id="email" value="{{ optional($user)->email }}" readonly>
+                                                    id="email" value="{{ optional($user)->email }}">
                                                 <x-input-error :messages="$errors->get('email')" class="mt-1" />
                                             </div>
                                         </div>
@@ -101,7 +101,7 @@
                                                     class="form-label mb-2 font-18 font-heading fw-600">Address
                                                 </label>
                                                 <input type="text" class="common-input border" id="address"
-                                                    value="{{ old('address') }}" />
+                                                    value="{{ optional($user)->address }}" name="address" />
                                                 <x-input-error :messages="$errors->get('address')" class="mt-1" />
                                             </div>
                                         </div>
@@ -113,6 +113,19 @@
                                                 <input type="file" class="common-input border" name="avatar"
                                                     id="avatar" value="{{ old('avatar') }}" />
                                                 <x-input-error :messages="$errors->get('avatar')" class="mt-1" />
+
+                                                @if (!empty($user->avatar))
+                                                    <div class="mt-2">
+                                                        <img id="image_preview" src="{{ asset($user->avatar) }}"
+                                                            alt="Uploaded Avatar" class="height__width__200px" />
+                                                    </div>
+                                                @else
+                                                    <div class="mt-2">
+                                                        <img id="image_preview" src="#" alt="Image Preview"
+                                                            class="d-none height__width__200px" />
+                                                    </div>
+                                                @endif
+
                                             </div>
                                         </div>
 
@@ -132,7 +145,7 @@
                                                 <label for="name"
                                                     class="form-label mb-2 font-18 font-heading fw-600">Full
                                                     Name</label>
-                                                <input type="text" class="common-input border" id="name"
+                                                <input type="text" class="common-input border" id="fullName"
                                                     value="Michel" placeholder="Full Name">
                                             </div>
                                         </div>
@@ -189,7 +202,8 @@
                                                         class="common-input common-input--withIcon common-input--withLeftIcon "
                                                         id="current-password" placeholder="************">
                                                     <span class="input-icon input-icon--left"><img
-                                                            src="assets/images/icons/key-icon.svg" alt=""></span>
+                                                            src="{{ asset('assets/user/images/icons/key-icon.svg') }}"
+                                                            alt=""></span>
                                                     <span
                                                         class="input-icon password-show-hide fas fa-eye la-eye-slash toggle-password-two"
                                                         id="#current-password"></span>
@@ -207,14 +221,16 @@
                                                         class="common-input common-input--withIcon common-input--withLeftIcon "
                                                         id="new-password" placeholder="************">
                                                     <span class="input-icon input-icon--left"><img
-                                                            src="assets/images/icons/lock-two.svg" alt=""></span>
+                                                            src="{{ asset('assets/user/images/icons/lock-two.svg') }}"
+                                                            alt="image"></span>
                                                     <span
                                                         class="input-icon password-show-hide fas fa-eye la-eye-slash toggle-password-two"
                                                         id="#new-password"></span>
+
+
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="col-sm-6 col-xs-6">
                                             <div class="form_box">
                                                 <label for="confirm-password"
@@ -225,7 +241,8 @@
                                                         class="common-input common-input--withIcon common-input--withLeftIcon "
                                                         id="confirm-password" placeholder="************">
                                                     <span class="input-icon input-icon--left"><img
-                                                            src="assets/images/icons/lock-two.svg" alt=""></span>
+                                                            src="{{ asset('assets/user/images/icons/lock-two.svg') }}"
+                                                            alt="image"></span>
                                                     <span
                                                         class="input-icon password-show-hide fas fa-eye la-eye-slash toggle-password-two"
                                                         id="#confirm-password"></span>
@@ -242,10 +259,38 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
+
+
+@push('css')
+    <style>
+        .height__width__200px {
+            height: 200px;
+            width: 200px;
+            border-radius: 10px;
+            border: 3px solid var(--colorSuccess);
+            margin-top: 10px;
+        }
+    </style>
+@endpush
+
+@push('js')
+    <script>
+        const avatar = document.getElementById('avatar');
+        avatar.addEventListener('change', function(event) {
+            const [file] = event.target.files;
+            const preview = document.getElementById('image_preview');
+
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.classList.remove('d-none');
+            } else {
+                preview.classList.add('d-none');
+            }
+        });
+    </script>
+@endpush

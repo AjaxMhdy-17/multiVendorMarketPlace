@@ -16,6 +16,8 @@
         }
     </style>
 
+    @stack('css')
+
 </head>
 
 <body>
@@ -192,6 +194,7 @@
     @include('user.layout.jsLibs')
     @include('user.layout.jsScripts')
 
+    @stack('js')
 
 </body>
 

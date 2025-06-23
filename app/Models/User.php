@@ -20,23 +20,24 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'level_id',
+        'balance',
+        'user_type',
+        'country',
+        'city',
+        'address',
+        'kyc_status',
+        'total_sales',
+        'withdraw_method_id'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+
     protected function casts(): array
     {
         return [
