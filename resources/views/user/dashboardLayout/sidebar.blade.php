@@ -1,10 +1,11 @@
 <div class="dashboard-sidebar">
     <button type="button" class="dashboard-sidebar__close d-lg-none d-flex"><i class="las la-times"></i></button>
     <div class="dashboard-sidebar__inner">
-        <a href="index.html" class="logo mb-48">
+        
+        <a href="{{ route('dashboard') }}" class="logo mb-48">
             <img src="{{ asset('assets/user/images/logo/logo.png') }}" alt="" class="white-version">
         </a>
-        <a href="index.html" class="logo logo_icon favicon mb-48">
+        <a href="{{ route('dashboard') }}" class="logo logo_icon favicon mb-48">
             <img src="{{ asset('assets/user/images/thumbs/dashboard_sidebar_icon.png') }}" alt="">
         </a>
 
@@ -53,11 +54,15 @@
                 </a>
             </li>
             <li class="sidebar-list__item">
-                <a href="login.html" class="sidebar-list__link">
+                <a href="#" class="sidebar-list__link"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
                     <span class="sidebar-list__icon">
                         <i class="ti ti-logout"></i>
                     </span>
                     <span class="text">Logout</span>
+                    <form id="logout-form" action="{{ route('logout') }}" method="post" class="hidden">
+                        @csrf
+                    </form>
                 </a>
             </li>
         </ul>

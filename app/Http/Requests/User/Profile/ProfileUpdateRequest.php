@@ -22,7 +22,18 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'avatar' => 'sometimes|file|image|mimes:jpeg,png,jpg|max:2048',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'level_id' => 'sometimes',
+            'balance' => 'sometimes',
+            'user_type' => 'sometimes',
+            'country' => 'sometimes',
+            'city' => 'sometimes',
+            'address' => 'sometimes',
+            'kyc_status' => 'sometimes',
+            'total_sales' => 'sometimes',
+            'withdraw_method_id' => 'sometimes',
         ];
     }
 }

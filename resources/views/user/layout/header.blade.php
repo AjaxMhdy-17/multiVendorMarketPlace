@@ -72,18 +72,26 @@
                              <img src="{{ asset('assets/user/images/icons/user.svg') }}"" alt="">
                          </button>
                          <ul class="dropdown-menu">
-                             <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
-                             <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
-                             <li><a class="dropdown-item" href="#">Profile</a></li>
-                             <li><a class="dropdown-item" href="#">Settings</a></li>
-                             <li>
-                                 <a href="#"
-                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit()"
-                                     class="dropdown-item">Logout</a>
-                                 <form id="logout-form" action="{{ route('logout') }}" method="post" class="hidden">
-                                     @csrf
-                                 </form>
-                             </li>
+
+                             @guest('web')
+                                 <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
+                                 <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
+                             @endguest
+
+                             @auth('web')
+                                 <li><a class="dropdown-item"
+                                         href="{{ route('profile.user.edit', ['user' => $user->id]) }}">Profile</a></li>
+
+                                 <li><a class="dropdown-item" href="#">Settings</a></li>
+                                 <li>
+                                     <a href="#"
+                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit()"
+                                         class="dropdown-item">Logout</a>
+                                     <form id="logout-form" action="{{ route('logout') }}" method="post" class="hidden">
+                                         @csrf
+                                     </form>
+                                 </li>
+                             @endauth
                          </ul>
                      </div>
                  </div>

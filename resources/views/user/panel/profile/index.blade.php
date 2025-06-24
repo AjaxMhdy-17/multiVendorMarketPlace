@@ -19,11 +19,7 @@
                                     aria-controls="pills-personalInfo" aria-selected="true">Personal
                                     Info</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link font-18 font-heading" id="pills-payouts-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-payouts" type="button" role="tab"
-                                    aria-controls="pills-payouts" aria-selected="false">Payouts</button>
-                            </li>
+
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link font-18 font-heading" id="pills-changePassword-tab"
                                     data-bs-toggle="pill" data-bs-target="#pills-changePassword" type="button"
@@ -58,7 +54,7 @@
                                                     class="form-label mb-2 font-18 font-heading fw-600">Email
                                                 </label>
                                                 <input type="email" name="email" class="common-input border"
-                                                    id="email" value="{{ optional($user)->email }}">
+                                                    id="email" value="{{ optional($user)->email }}" readonly>
                                                 <x-input-error :messages="$errors->get('email')" class="mt-1" />
                                             </div>
                                         </div>
@@ -67,12 +63,16 @@
                                             <div class="form_box">
                                                 <label for="Countryyy"
                                                     class="form-label mb-2 font-18 font-heading fw-600">Country</label>
-                                                <div class="select-has-icon">
-                                                    <select class="common-input border" name="country" id="Countryyy">
-                                                        <option value="1">USA</option>
-                                                        <option value="1">Bangladesh</option>
-                                                        <option value="1">Europe</option>
-                                                        <option value="1">Africa</option>
+                                                <div class="select-has--icon">
+                                                    <select class="common-input border select_2" name="country"
+                                                        id="Countryyy">
+                                                        <option value="">Select Country</option>
+                                                        @forelse (config('options.countries') as $key => $value)
+                                                            <option @selected($user->country == $value)
+                                                                value="{{ $value }}">{{ $value }}</option>
+                                                        @empty
+                                                            <option value="">No Country Added</option>
+                                                        @endforelse
                                                     </select>
                                                     <x-input-error :messages="$errors->get('country')" class="mt-1" />
                                                 </div>
@@ -83,12 +83,14 @@
                                             <div class="form_box">
                                                 <label for="cityyy"
                                                     class="form-label mb-2 font-18 font-heading fw-600">City</label>
-                                                <div class="select-has-icon">
-                                                    <select class="common-input border" name="city" id="cityyy">
-                                                        <option value="1">Dhaka</option>
-                                                        <option value="1">Chandpur</option>
-                                                        <option value="1">Comilla</option>
-                                                        <option value="1">Chittagong</option>
+                                                <div class="select-has--icon">
+                                                    <select class="common-input border select_2" name="city"
+                                                        id="cityyy">
+                                                        <option value="">Select Country</option>
+                                                        <option value="dhaka">Dhaka</option>
+                                                        <option value="chandpur">Chandpur</option>
+                                                        <option value="comilla">Comilla</option>
+                                                        <option value="chittagong">Chittagong</option>
                                                     </select>
                                                 </div>
                                                 <x-input-error :messages="$errors->get('city')" class="mt-1" />
@@ -136,60 +138,10 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="tab-pane fade" id="pills-payouts" role="tabpanel"
-                                aria-labelledby="pills-payouts-tab" tabindex="0">
-                                <form action="#" autocomplete="off">
-                                    <div class="row">
-                                        <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="name"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Full
-                                                    Name</label>
-                                                <input type="text" class="common-input border" id="fullName"
-                                                    value="Michel" placeholder="Full Name">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="phone"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Phone
-                                                    Number</label>
-                                                <input type="tel" class="common-input border" id="phone"
-                                                    value="+880 15589 236 45" placeholder="Phone Number">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="emailAdd"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Email
-                                                    Address</label>
-                                                <input type="email" class="common-input border" id="emailAdd"
-                                                    value="michel15@gmail.com" placeholder="Email Address">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="city"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">City</label>
-                                                <div class="select-has-icon">
-                                                    <select class="common-input border" id="city">
-                                                        <option value="1">Dhaka</option>
-                                                        <option value="1">Chandpur</option>
-                                                        <option value="1">Comilla</option>
-                                                        <option value="1">Rangpur</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <button class="btn btn-main btn-lg"> Pay Now</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
                             <div class="tab-pane fade" id="pills-changePassword" role="tabpanel"
                                 aria-labelledby="pills-changePassword-tab" tabindex="0">
-                                <form action="#" autocomplete="off">
+                                <form action="{{ route('profile.user.store') }}" method="post">
+                                    @csrf
                                     <div class="row">
 
                                         <div class="col-12">
@@ -200,7 +152,7 @@
                                                 <div class="position-relative">
                                                     <input type="password"
                                                         class="common-input common-input--withIcon common-input--withLeftIcon "
-                                                        id="current-password" placeholder="************">
+                                                        id="current-password" name="current-password" />
                                                     <span class="input-icon input-icon--left"><img
                                                             src="{{ asset('assets/user/images/icons/key-icon.svg') }}"
                                                             alt=""></span>
@@ -208,45 +160,46 @@
                                                         class="input-icon password-show-hide fas fa-eye la-eye-slash toggle-password-two"
                                                         id="#current-password"></span>
                                                 </div>
+                                                <x-input-error :messages="$errors->get('current-password')" class="mt-1" />
                                             </div>
                                         </div>
 
                                         <div class="col-sm-6 col-xs-6">
                                             <div class="form_box">
-                                                <label for="new-password"
+                                                <label for="password"
                                                     class="form-label mb-2 font-18 font-heading fw-600">New
                                                     Password</label>
                                                 <div class="position-relative">
                                                     <input type="password"
                                                         class="common-input common-input--withIcon common-input--withLeftIcon "
-                                                        id="new-password" placeholder="************">
+                                                        id="password" name="password" />
                                                     <span class="input-icon input-icon--left"><img
                                                             src="{{ asset('assets/user/images/icons/lock-two.svg') }}"
                                                             alt="image"></span>
                                                     <span
                                                         class="input-icon password-show-hide fas fa-eye la-eye-slash toggle-password-two"
-                                                        id="#new-password"></span>
-
-
+                                                        id="#password"></span>
                                                 </div>
+                                                <x-input-error :messages="$errors->get('password')" class="mt-1" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-xs-6">
                                             <div class="form_box">
-                                                <label for="confirm-password"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Current
+                                                <label for="password_confirmation"
+                                                    class="form-label mb-2 font-18 font-heading fw-600">Confirm
                                                     Password</label>
                                                 <div class="position-relative">
                                                     <input type="password"
                                                         class="common-input common-input--withIcon common-input--withLeftIcon "
-                                                        id="confirm-password" placeholder="************">
+                                                        id="password_confirmation" name="password_confirmation">
                                                     <span class="input-icon input-icon--left"><img
                                                             src="{{ asset('assets/user/images/icons/lock-two.svg') }}"
                                                             alt="image"></span>
                                                     <span
                                                         class="input-icon password-show-hide fas fa-eye la-eye-slash toggle-password-two"
-                                                        id="#confirm-password"></span>
+                                                        id="#password_confirmation"></span>
                                                 </div>
+                                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
                                             </div>
                                         </div>
 
@@ -272,11 +225,12 @@
             height: 200px;
             width: 200px;
             border-radius: 10px;
-            border: 3px solid var(--colorSuccess);
+            border: 3px solid var(--colorPrimary);
             margin-top: 10px;
         }
     </style>
 @endpush
+
 
 @push('js')
     <script>
