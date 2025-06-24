@@ -39,73 +39,32 @@
 
                                     <div class="row">
                                         <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="name"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Full
-                                                    Name</label>
-                                                <input type="text" class="common-input border" id="name"
-                                                    value="{{ optional($user)->name }}" name="name" />
-                                                <x-input-error :messages="$errors->get('name')" class="mt-1" />
-                                            </div>
+                                            <x-user.input-text type="text" name='name' label="{{ __('Name') }}"
+                                                value="{{ optional($user)->name }}" />
                                         </div>
                                         <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="email"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Email
-                                                </label>
-                                                <input type="email" name="email" class="common-input border"
-                                                    id="email" value="{{ optional($user)->email }}" readonly>
-                                                <x-input-error :messages="$errors->get('email')" class="mt-1" />
-                                            </div>
+                                            <x-user.input-text type="email" name='email' label="{{ __('Email') }}"
+                                                value="{{ optional($user)->email }}" readonly />
                                         </div>
 
                                         <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="Countryyy"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Country</label>
-                                                <div class="select-has--icon">
-                                                    <select class="common-input border select_2" name="country"
-                                                        id="Countryyy">
-                                                        <option value="">Select Country</option>
-                                                        @forelse (config('options.countries') as $key => $value)
-                                                            <option @selected($user->country == $value)
-                                                                value="{{ $value }}">{{ $value }}</option>
-                                                        @empty
-                                                            <option value="">No Country Added</option>
-                                                        @endforelse
-                                                    </select>
-                                                    <x-input-error :messages="$errors->get('country')" class="mt-1" />
-                                                </div>
-                                            </div>
+                                            <x-user.input-select name="country" :label="__('country')">
+                                                @foreach (config('options.countries') as $key => $value)
+                                                    <option @selected($user->country == $value) value="{{ $value }}">
+                                                        {{ $value }}
+                                                    </option>
+                                                @endforeach
+                                            </x-user.input-select>
                                         </div>
 
                                         <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="cityyy"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">City</label>
-                                                <div class="select-has--icon">
-                                                    <select class="common-input border select_2" name="city"
-                                                        id="cityyy">
-                                                        <option value="">Select Country</option>
-                                                        <option value="dhaka">Dhaka</option>
-                                                        <option value="chandpur">Chandpur</option>
-                                                        <option value="comilla">Comilla</option>
-                                                        <option value="chittagong">Chittagong</option>
-                                                    </select>
-                                                </div>
-                                                <x-input-error :messages="$errors->get('city')" class="mt-1" />
-                                            </div>
+                                            <x-user.input-text type="text" name='city' label="{{ __('City') }}"
+                                                value="{{ optional($user)->city }}" />
                                         </div>
 
                                         <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="address"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Address
-                                                </label>
-                                                <input type="text" class="common-input border" id="address"
-                                                    value="{{ optional($user)->address }}" name="address" />
-                                                <x-input-error :messages="$errors->get('address')" class="mt-1" />
-                                            </div>
+                                            <x-user.input-text type="text" name='address' label="{{ __('Address') }}"
+                                                value="{{ optional($user)->address }}" />
                                         </div>
 
                                         <div class="col-sm-6 col-xs-6">
@@ -145,62 +104,20 @@
                                     <div class="row">
 
                                         <div class="col-12">
-                                            <div class="form_box">
-                                                <label for="current-password"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Current
-                                                    Password</label>
-                                                <div class="position-relative">
-                                                    <input type="password"
-                                                        class="common-input common-input--withIcon common-input--withLeftIcon "
-                                                        id="current-password" name="current-password" />
-                                                    <span class="input-icon input-icon--left"><img
-                                                            src="{{ asset('assets/user/images/icons/key-icon.svg') }}"
-                                                            alt=""></span>
-                                                    <span
-                                                        class="input-icon password-show-hide fas fa-eye la-eye-slash toggle-password-two"
-                                                        id="#current-password"></span>
-                                                </div>
-                                                <x-input-error :messages="$errors->get('current-password')" class="mt-1" />
-                                            </div>
+                                            <x-user.input-text type="password" name='current-password'
+                                                label="{{ __('Current Password') }}" />
                                         </div>
 
                                         <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="password"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">New
-                                                    Password</label>
-                                                <div class="position-relative">
-                                                    <input type="password"
-                                                        class="common-input common-input--withIcon common-input--withLeftIcon "
-                                                        id="password" name="password" />
-                                                    <span class="input-icon input-icon--left"><img
-                                                            src="{{ asset('assets/user/images/icons/lock-two.svg') }}"
-                                                            alt="image"></span>
-                                                    <span
-                                                        class="input-icon password-show-hide fas fa-eye la-eye-slash toggle-password-two"
-                                                        id="#password"></span>
-                                                </div>
-                                                <x-input-error :messages="$errors->get('password')" class="mt-1" />
-                                            </div>
+                                            <x-user.input-text type="password" name='password'
+                                                label="{{ __('New Password') }}" />
+
                                         </div>
                                         <div class="col-sm-6 col-xs-6">
-                                            <div class="form_box">
-                                                <label for="password_confirmation"
-                                                    class="form-label mb-2 font-18 font-heading fw-600">Confirm
-                                                    Password</label>
-                                                <div class="position-relative">
-                                                    <input type="password"
-                                                        class="common-input common-input--withIcon common-input--withLeftIcon "
-                                                        id="password_confirmation" name="password_confirmation">
-                                                    <span class="input-icon input-icon--left"><img
-                                                            src="{{ asset('assets/user/images/icons/lock-two.svg') }}"
-                                                            alt="image"></span>
-                                                    <span
-                                                        class="input-icon password-show-hide fas fa-eye la-eye-slash toggle-password-two"
-                                                        id="#password_confirmation"></span>
-                                                </div>
-                                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
-                                            </div>
+
+                                            <x-user.input-text type="password" name='password_confirmation'
+                                                label="{{ __('Confirm Password') }}" />
+
                                         </div>
 
                                         <div class="col-sm-12">
