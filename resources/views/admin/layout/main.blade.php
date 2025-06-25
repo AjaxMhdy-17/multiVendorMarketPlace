@@ -13,6 +13,8 @@
 
     @include('admin.layout.cssStyle')
 
+    @stack('css')
+
 </head>
 
 <body>
