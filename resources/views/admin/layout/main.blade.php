@@ -13,6 +13,33 @@
 
     @include('admin.layout.cssStyle')
 
+
+    <style>
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dropdown-toggle:after {
+            display: none;
+        }
+
+        .btn-list {
+            justify-content: end;
+        }
+
+
+        .btn .icon {
+            margin: 0 !important;
+        }
+
+
+        .h__100 {
+            min-height: 200px ;
+        }
+    </style>
+
+
     @stack('css')
 
 </head>

@@ -12,7 +12,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $title = "Role Permissions List" ; 
+        $title = "Role Permissions List";
+        return view('admin.accessManagement.role.index', ['title' => $title]);
     }
 
     /**
