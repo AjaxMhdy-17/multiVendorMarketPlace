@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\RolePermissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')->prefix('admin')->as('admin.')->group(function () {
@@ -49,5 +49,9 @@ Route::middleware('auth:admin')->prefix('admin')->as('admin.')->group(function (
 
 
     // Route management Routes 
-    Route::resource('roles', RoleController::class);
+
+
+    Route::prefix('roles')->as('roles.')->group(function () {
+        Route::resource('permissions', RolePermissionController::class);
+    });
 });
