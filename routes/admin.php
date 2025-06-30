@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RolePermissionController;
+use App\Http\Controllers\Admin\RoleUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')->prefix('admin')->as('admin.')->group(function () {
@@ -53,5 +54,6 @@ Route::middleware('auth:admin')->prefix('admin')->as('admin.')->group(function (
 
     Route::prefix('roles')->as('roles.')->group(function () {
         Route::resource('permissions', RolePermissionController::class);
+        Route::resource('user', RoleUserController::class);
     });
 });

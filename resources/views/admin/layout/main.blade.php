@@ -40,6 +40,11 @@
         .h__100 {
             min-height: 200px;
         }
+
+        .drop-down-active {
+            color: white !important;
+            background: rgba(0, 0, 0, 0.2);
+        }
     </style>
 
 

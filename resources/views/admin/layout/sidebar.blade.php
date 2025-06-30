@@ -269,10 +269,12 @@
                     <div class="dropdown-menu {{ request()->routeIs('admin.roles.*') ? 'show' : '' }} ">
                         <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
-                                <a class="dropdown-item" href="./layout-horizontal.html">
+                                <a class="dropdown-item {{ request()->routeIs('admin.roles.user.*') ? 'drop-down-active' : '' }}"
+                                    href="{{ route('admin.roles.user.index') }}">
                                     Users
                                 </a>
-                                <a class="dropdown-item" href="{{ route('admin.roles.permissions.index') }}">
+                                <a class="dropdown-item {{ request()->routeIs('admin.roles.permissions.*') ? 'drop-down-active' : '' }}"
+                                    href="{{ route('admin.roles.permissions.index') }}">
                                     Permissions
                                 </a>
                             </div>
