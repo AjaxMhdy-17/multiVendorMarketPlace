@@ -39,17 +39,11 @@ class RolePermissionController extends Controller
         return back();
     }
 
-    public function edit(Role $role)
+    public function edit(string $id)
     {
         $data['title'] = "Role Permissions Edit";
-
-        dd($role);
-
-        $data['roles'] = $role;
+        $data['roles'] = Role::findOrFail($id);
         $data['permissions'] = Permission::all()->groupBy('group_name');
-
-        dd($data['roles']);
-
         return view('admin.accessManagement.role.edit', $data);
     }
 
@@ -77,6 +71,7 @@ class RolePermissionController extends Controller
         $role = Role::findOrFail($id);
 
         DB::beginTransaction();
+        $role->users()->detach();
         $role->permissions()->detach();
         $role->delete();
         DB::commit();

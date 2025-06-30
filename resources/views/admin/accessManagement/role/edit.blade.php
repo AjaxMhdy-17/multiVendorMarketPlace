@@ -37,7 +37,8 @@
                                 <a href="{{ route('admin.roles.permissions.index') }}" class="btn btn-primary"> <- back</a>
                             </div>
                         </div>
-                        <form action="{{ route('admin.roles.permissions.update', ['permission' => 88]) }}" method="post">
+                        <form action="{{ route('admin.roles.permissions.update', ['permission' => $roles->id]) }}"
+                            method="post">
                             @csrf
                             @method('PUT')
                             <div class="card-body">

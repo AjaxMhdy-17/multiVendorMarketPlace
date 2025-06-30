@@ -62,19 +62,16 @@
                                     <div class="col-12">
                                         <x-admin.input-select name="role" label="{{ __('User Permission') }}">
                                             @foreach ($roles as $role)
-                                                <option @selected(in_array($role->
-                                                    name,$user_info->getRoleNames()->toArray()))
-                                                    value="{{ $role->name }}">
+                                                <option @selected(in_array($role->name, $user_info->getRoleNames()->toArray())) value="{{ $role->name }}">
                                                     {{ $role->name }}
                                                 </option>
                                             @endforeach
                                         </x-admin.input-select>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">{{ __('CREATE') }}</button>
+                                <button type="submit" class="btn btn-primary">{{ __('UPDATE') }}</button>
                             </div>
                         </form>
                     </div>

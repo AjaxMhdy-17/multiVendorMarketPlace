@@ -50,6 +50,13 @@ class RoleUserController extends Controller
     {
         $data['title'] = "User Edit";
         $data['roles'] = Role::get();
+
+        $data['role'] = Role::findOrFail($id);
+
+        if (strtolower(trim($data['role']->name)) == 'super admin') {
+            NotificationService::ERROR('Something Went Wrong!');
+            return redirect()->route('admin.roles.user.index');
+        }
         $data['user_info'] = Admin::findOrFail($id);
         return view('admin.accessManagement.user.edit', $data);
     }
@@ -91,6 +98,13 @@ class RoleUserController extends Controller
     public function destroy(string $id)
     {
         $adminInfo = Admin::findOrFail($id);
+        $data['role'] = Role::findOrFail($id);
+
+        if (strtolower(trim($data['role']->name)) == 'super admin') {
+            NotificationService::ERROR('Something Went Wrong!');
+            return redirect()->route('admin.roles.user.index');
+        }
+
         if (count($adminInfo->getRoleNames()) > 0) {
             foreach ($adminInfo->getRoleNames() as $role) {
                 $adminInfo->removeRole($role);
