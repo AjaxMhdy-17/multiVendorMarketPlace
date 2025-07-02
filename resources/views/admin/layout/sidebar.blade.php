@@ -285,6 +285,43 @@
 
 
                 <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.kyc.*') ? 'active' : '' }}"
+                        href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+                        aria-expanded="true">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-brand-kick">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M4 4h5v4h3v-2h2v-2h6v4h-2v2h-2v4h2v2h2v4h-6v-2h-2v-2h-3v4h-5z" />
+                            </svg>
+                        </span>
+                        <span class="nav-link-title">
+                            Kyc
+                        </span>
+                    </a>
+                    <div class="dropdown-menu {{ request()->routeIs('admin.kyc.*') ? 'show' : '' }} ">
+                        <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                <a class="dropdown-item {{ request()->routeIs('admin.kyc.setting.*') ? 'drop-down-active' : '' }}"
+                                    href="{{ route('admin.kyc.setting.index') }}">
+                                    Settings
+                                </a>
+                                <a class="dropdown-item {{ request()->routeIs('admin.roles.permissions.*') ? 'drop-down-active' : '' }}"
+                                    href="{{ route('admin.roles.permissions.index') }}">
+                                    Permissions
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+
+
+
+
+                {{-- <li class="nav-item active dropdown">
                     <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="true">
                         <span
@@ -320,7 +357,7 @@
                             </div>
                         </div>
                     </div>
-                </li>
+                </li> --}}
 
                 <li class="nav-item">
                     <a class="nav-link" href="./icons.html">

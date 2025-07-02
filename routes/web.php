@@ -7,17 +7,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('admin/dashboard', function () {
-    $data['title'] = "dashboard";
-    return view('admin.dashboard.index', $data);
-})->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
+// Route::get('admin/dashboard', function () {
+//     $data['title'] = "dashboard";
+//     return view('admin.dashboard.index', $data);
+// })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 
 
 Route::middleware('auth')->group(function () {
+
+
+    Route::get('/dashboard', function () {
+        return view('user.panel.dashboard.index');
+    })->name('dashboard');
+
     Route::prefix('profile')->as('profile.')->group(function () {
         Route::resource('user', ProfileController::class);
     });
