@@ -43,8 +43,9 @@
                                             <th><input type="checkbox" id="select-all"></th>
                                             <th>#</th>
                                             <th>name</th>
-                                            <th>email</th>
-                                            <th>photo</th>
+                                            <th>document_type</th>
+                                            <th>document_number</th>
+                                            <th>status</th>
                                             <th>created At</th>
                                             <th>action</th>
                                         </tr>
@@ -71,6 +72,10 @@
         thead tr th:nth-child(1) .dt-column-order,
         thead tr th:nth-child(2) .dt-column-order {
             display: none;
+        }
+
+        .w__100px {
+            background: greenyellow !important;
         }
     </style>
 @endpush
@@ -107,20 +112,26 @@
                         orderable: false,
                         searchable: false,
                         className: "text-center"
-                    }, {
+                    },
+                    {
                         data: 'name',
                         name: 'name',
                         className: "text-center ",
                     },
                     {
-                        data: 'email',
-                        name: 'email',
+                        data: 'document_type',
+                        name: 'document_type',
+                        className: "text-center ",
+                    },
+                    {
+                        data: 'document_number',
+                        name: 'document_number',
                         className: "text-center",
                     },
                     {
-                        data: 'photo',
-                        name: 'photo',
-                        className: "text-center",
+                        data: 'status',
+                        name: 'status',
+                        className: "text-start",
                     },
                     {
                         data: 'created_at',
@@ -144,8 +155,6 @@
                 }
             });
 
-
-            // CSRF token
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf"]').attr('content')
@@ -162,6 +171,9 @@
                 }
             }
 
+
+
+
             $(document).on('change', '#select-all', function() {
                 $('.row-checkbox').prop('checked', this.checked);
                 toggleDeleteButton();
@@ -174,6 +186,7 @@
                 toggleDeleteButton();
             });
 
+            // bulk delete 
             $('#delete-selected').on('click', function() {
                 const ids = $('.row-checkbox:checked').map(function() {
                     return $(this).val();
@@ -211,10 +224,29 @@
                     }
                 });
 
-
-
             });
 
+
+
+            //single delete 
+            $(document).on('click', '.show-alert-delete-box', function(e) {
+                e.preventDefault();
+                let formId = $(this).data('form-id');
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to undo this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(formId).submit();
+                    }
+                });
+            });
         });
     </script>
 @endpush

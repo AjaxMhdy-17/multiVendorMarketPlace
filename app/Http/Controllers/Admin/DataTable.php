@@ -26,36 +26,25 @@ class KycSubmissionController extends Controller
 
 
         if ($request->ajax()) {
-            $kycs = KycVerification::with(['user:id,name'])->select(['id', 'user_id', 'document_type', 'document_number', 'status', 'created_at'])->orderBy('created_at', 'desc');
-            return DataTables::eloquent($kycs)
-                ->addColumn('checkbox', function ($kyc) {
-                    return '<input type="checkbox" class="row-checkbox" value="' . $kyc->id . '">';
+            $users = User::select(['id', 'document_type', 'document_number', 'avatar', 'created_at'])->orderBy('created_at', 'desc');
+            return DataTables::eloquent($users)
+                ->addColumn('checkbox', function ($user) {
+                    return '<input type="checkbox" class="row-checkbox" value="' . $user->id . '">';
                 })
                 ->addIndexColumn()
-                ->addColumn('name', function ($kyc) {
-                    return $kyc->user->name;
+                ->addColumn('photo', function ($user) {
+                    $imageUrl = isset($user->avatar) ? asset($user->avatar) : null;
+                    return '<img src="' . $imageUrl . '" alt="Photo" width="50" height="50">';
                 })
-                ->editColumn('status', function ($kyc) {
-                    if ($kyc->status == 'pending') {
-                        return '<td><span class="badge bg-warning me-1"></span>' . $kyc->status . '</td>';
-                    } else if ($kyc->status == 'approved') {
-                        return '<td><span class="badge bg-success me-1"></span>' . $kyc->status . '</td>';
-                    } else if ($kyc->status == 'rejected') {
-                        return '<td><span class="badge bg-danger me-1"></span>' . $kyc->status . '</td>';
-                    }
+                ->addColumn('created_at', function ($user) {
+                    return Carbon::parse($user->created_at)->format('Y-m-d');
                 })
-                ->editColumn('created_at', function ($kyc) {
-                    return Carbon::parse($kyc->created_at)->format('Y-m-d');
-                })
-                ->filterColumn('document_number', function ($query, $keyword) {
-                    $query->where('kyc_verifications.document_number', 'like', "%{$keyword}%");
-                })
-                ->editColumn('document_number', function ($kyc) {
-                    return  $kyc->document_number;
-                })
-                ->addColumn('action', function ($kyc) {
-                    $editUrl = route('admin.kyc.submission.show', ['submission' => $kyc->id]);
-                    $deleteUrl = route('admin.kyc.submission.destroy', ['submission' => $kyc->id]);
+                // ->addColumn('status', function ($product) {
+                //     return $product->status == 1 ? "<span class='badge badge-primary'>Active</span>" : " <span class='badge badge-danger'>In Active</span>";
+                // })
+                ->addColumn('action', function ($user) {
+                    $editUrl = route('admin.kyc.submission.edit', ['submission' => $user->id]);
+                    $deleteUrl = route('admin.kyc.submission.destroy', ['submission' => $user->id]);
                     return '
                         <div class="btn-list flex-nowrap">
                             <div class="dropdown">
@@ -78,21 +67,23 @@ class KycSubmissionController extends Controller
                                     </svg>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="' . $editUrl . '">View</a>
-                                    <a href="#" class="dropdown-item show-alert-delete-box" data-form-id="delete-form-' . $kyc->id . '">Delete</a>
-                                    <form id="delete-form-' . $kyc->id . '" method="POST" action="' . $deleteUrl . '" class="d-none">
+                                    <a class="dropdown-item" href="' . $editUrl . '">Edit</a>
+                                    <a href="#" class="dropdown-item show-alert-delete-box" data-form-id="delete-form-' . $user->id . '">
+                                        Delete
+                                    </a>
+                                    <form id="delete-form-' . $user->id . '" class="delete-form d-none" method="POST" action="' . $deleteUrl . '">
                                         ' . csrf_field() . method_field('DELETE') . '
                                     </form>
                                 </div>
                             </div>
                         </div>';
                 })
-                ->rawColumns(['name', 'action', 'status', 'checkbox'])
+                ->rawColumns(['action', 'status', 'photo', 'checkbox'])
                 ->make(true);
         }
 
         $data['title'] = "Kyc Submissions";
-        $data['kycVerifications'] = KycVerification::orderBy('created_at', 'desc')->get();
+        $data['kycVerifications'] = User::all();
         return view('admin.kyc.submission.index', $data);
     }
 
@@ -120,11 +111,28 @@ class KycSubmissionController extends Controller
         //
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
-        $user = KycVerification::findOrFail($id);
-        $user->delete();
-        return redirect()->route('admin.kyc.submission.index');
+        dd($id);
     }
 
 

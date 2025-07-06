@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Traits;
+
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
