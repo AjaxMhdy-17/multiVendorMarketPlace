@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <meta name="csrf" content="{{ csrf_token() }}">
+    
 
     <title>
         @yield('title')

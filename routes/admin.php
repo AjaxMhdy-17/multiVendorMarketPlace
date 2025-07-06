@@ -64,6 +64,7 @@ Route::middleware('auth:admin')->prefix('admin')->as('admin.')->group(function (
         Route::get('setting', [KycSettingController::class, 'index'])->name('setting.index');
         Route::put('setting', [KycSettingController::class, 'store'])->name('setting.store');
 
+        Route::post('submission/bulk-delete', [KycSubmissionController::class, 'bulkDelete'])->name('submission.bulk-delete');
         Route::resource('submission', KycSubmissionController::class);
     });
 });

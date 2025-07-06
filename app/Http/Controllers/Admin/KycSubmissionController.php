@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\KycSetting;
 use App\Models\KycVerification;
 use App\Models\User;
+use App\Services\NotificationService;
+use App\Traits\HandlesImageUploads;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class KycSubmissionController extends Controller
 {
+
+    use HandlesImageUploads;
+
     /**
      * Display a listing of the resource.
      */
@@ -20,8 +25,12 @@ class KycSubmissionController extends Controller
 
 
         if ($request->ajax()) {
-            $users = User::orderBy('created_at', 'desc');
+            $users = User::select(['id', 'name', 'email', 'avatar', 'created_at'])->orderBy('created_at', 'desc');
             return DataTables::eloquent($users)
+                ->addColumn('checkbox', function ($user) {
+                    return '<input type="checkbox" class="row-checkbox" value="' . $user->id . '">';
+                })
+                ->addIndexColumn()
                 ->addColumn('photo', function ($user) {
                     $imageUrl = isset($user->avatar) ? asset($user->avatar) : null;
                     return '<img src="' . $imageUrl . '" alt="Photo" width="50" height="50">';
@@ -33,8 +42,8 @@ class KycSubmissionController extends Controller
                 //     return $product->status == 1 ? "<span class='badge badge-primary'>Active</span>" : " <span class='badge badge-danger'>In Active</span>";
                 // })
                 ->addColumn('action', function ($user) {
-                    $editUrl = route('admin.roles.permissions.edit', ['permission' => $user->id]);
-                    $deleteUrl = route('admin.roles.permissions.destroy', ['permission' => $user->id]);
+                    $editUrl = route('admin.kyc.submission.edit', ['submission' => $user->id]);
+                    $deleteUrl = route('admin.kyc.submission.destroy', ['submission' => $user->id]);
                     return '
                         <div class="btn-list flex-nowrap">
                             <div class="dropdown">
@@ -68,7 +77,7 @@ class KycSubmissionController extends Controller
                             </div>
                         </div>';
                 })
-                ->rawColumns(['action', 'status', 'photo'])
+                ->rawColumns(['action', 'status', 'photo', 'checkbox'])
                 ->make(true);
         }
 
@@ -122,6 +131,27 @@ class KycSubmissionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        dd($id);
+    }
+
+
+    public function bulkDelete(Request $request)
+    {
+
+        $idsString = $request->input('ids');
+        $ids = array_filter(explode(',', $idsString));
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'No items selected for deletion.');
+        }
+        $users = User::whereIn('id', $ids)->get();
+        foreach ($users as $user) {
+            $this->deleteImage($user->photo);
+        }
+        User::whereIn('id', $ids)->delete();
+
+        // NotificationService::DELETED("Selected User Deleted!");
+
+
+        return redirect()->route('admin.kyc.submission.index');
     }
 }

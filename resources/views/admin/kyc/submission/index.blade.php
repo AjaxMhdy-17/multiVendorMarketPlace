@@ -33,12 +33,15 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">{{ __($title) }}</h3>
+                            <button id="delete-selected" class="btn btn-danger d-none">{{ __('Delete Selected') }}</button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
+                                            <th><input type="checkbox" id="select-all"></th>
+                                            <th>#</th>
                                             <th>name</th>
                                             <th>email</th>
                                             <th>photo</th>
@@ -60,87 +63,54 @@
 @endsection
 
 
+@include('admin.layout.dataTableLibs')
+
+
 @push('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
-
     <style>
-        .dt-input {
-            margin-right: 10px;
-            color: rgba(var(--tblr-secondary-rgb), var(--tblr-text-opacity)) !important;
-        }
-
-        .dt-search label {
-            margin-right: 10px;
-            color: rgba(var(--tblr-secondary-rgb), var(--tblr-text-opacity)) !important;
-        }
-
-        .dt-info {
-            --tblr-text-opacity: 1;
-            color: rgba(var(--tblr-secondary-rgb), var(--tblr-text-opacity)) !important;
-        }
-
-        .table thead th {
-            background: var(--tblr-bg-surface-tertiary);
-            font-size: .75rem;
-            font-weight: var(--tblr-font-weight-medium);
-            text-transform: uppercase;
-            letter-spacing: .04em;
-            line-height: 1rem;
-            color: var(--tblr-secondary);
-            white-space: nowrap;
-        }
-
-        tbody tr td {
-            padding: .15rem .15rem !important;
-            color: var(--tblr-table-color-state, var(--tblr-table-color-type, var(--tblr-table-color))) !important;
-            background-color: var(--tblr-table-bg) !important;
-            border-bottom-width: var(--tblr-border-width) !important;
-            box-shadow: inset 0 0 0 9999px var(--tblr-table-bg-state, var(--tblr-table-bg-type, var(--tblr-table-accent-bg))) !important;
-            vertical-align: middle !important;
-        }
-
-
-        .dt-paging-button {
-            padding: 5px !important;
-        }
-
-        .dt-paging-button {
-            z-index: 3;
-            color: var(--tblr-pagination-active-color) !important;
-            background-color: var(--tblr-pagination-active-bg) !important;
-            border-color: var(--tblr-pagination-active-border-color) !important;
-        }
-
-        .current {
-            background: #2fb344 !important;
-        }
-
-
-        .dt-paging-button:hover {
-            background: #4299e1 !important;
+        thead tr th:nth-child(1) .dt-column-order,
+        thead tr th:nth-child(2) .dt-column-order {
+            display: none;
         }
     </style>
 @endpush
 
+
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush
 
 
+
+
+@push('js')
     <script type="text/javascript">
         $(document).ready(function() {
-            $('.datatable').DataTable({
+            table = $('.datatable').DataTable({
                 serverSide: true,
                 processing: true,
+                responsive: true,
                 ajax: {
                     url: "{{ route('admin.kyc.submission.index') }}"
                 },
                 columns: [{
+                        data: 'checkbox',
+                        name: 'checkbox',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        title: 'No',
+                        orderable: false,
+                        searchable: false,
+                        className: "text-center"
+                    }, {
                         data: 'name',
                         name: 'name',
-                        className: "text-start",
+                        className: "text-center ",
                     },
                     {
                         data: 'email',
@@ -165,7 +135,86 @@
                         searchable: false
                     },
                 ],
+                columnDefs: [{
+                    target: 0,
+                    width: "60px"
+                }],
+                drawCallback: function() {
+                    toggleDeleteButton();
+                }
             });
+
+
+            // CSRF token
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf"]').attr('content')
+                }
+            });
+
+
+            function toggleDeleteButton() {
+                let selected = $('.row-checkbox:checked').length;
+                if (selected > 0) {
+                    $('#delete-selected').removeClass('d-none');
+                } else {
+                    $('#delete-selected').addClass('d-none');
+                }
+            }
+
+            $(document).on('change', '#select-all', function() {
+                $('.row-checkbox').prop('checked', this.checked);
+                toggleDeleteButton();
+            });
+
+
+            $(document).on('change', '.row-checkbox', function() {
+                let allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+                $('#select-all').prop('checked', allChecked);
+                toggleDeleteButton();
+            });
+
+            $('#delete-selected').on('click', function() {
+                const ids = $('.row-checkbox:checked').map(function() {
+                    return $(this).val();
+                }).get();
+
+                if (ids.length === 0) return;
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete selected!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('admin.kyc.submission.bulk-delete') }}",
+                            type: "POST",
+                            data: {
+                                ids: ids
+                            },
+                            success: function(response) {
+                                Swal.fire('Deleted!', response.message, 'success');
+                                table.ajax.reload(null, false);
+                                $('#select-all').prop('checked', false);
+                                toggleDeleteButton();
+                            },
+                            error: function(xhr) {
+                                Swal.fire('Error!', 'Something went wrong.', 'error');
+                                console.error(xhr.responseText);
+                            }
+                        });
+                    }
+                });
+
+
+
+            });
+
         });
     </script>
 @endpush
