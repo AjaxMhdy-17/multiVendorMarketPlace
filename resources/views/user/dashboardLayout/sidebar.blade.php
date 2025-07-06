@@ -1,11 +1,11 @@
 <div class="dashboard-sidebar">
     <button type="button" class="dashboard-sidebar__close d-lg-none d-flex"><i class="las la-times"></i></button>
     <div class="dashboard-sidebar__inner">
-        
-        <a href="{{ route('dashboard') }}" class="logo mb-48">
+
+        <a href="{{ route('home.index') }}" class="logo mb-48">
             <img src="{{ asset('assets/user/images/logo/logo.png') }}" alt="" class="white-version">
         </a>
-        <a href="{{ route('dashboard') }}" class="logo logo_icon favicon mb-48">
+        <a href="{{ route('home.index') }}" class="logo logo_icon favicon mb-48">
             <img src="{{ asset('assets/user/images/thumbs/dashboard_sidebar_icon.png') }}" alt="">
         </a>
 

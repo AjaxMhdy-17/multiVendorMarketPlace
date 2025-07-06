@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
-            <a href=".">
+            <a href="{{ route('admin.dashboard') }}">
                 <img src="{{ asset('assets/admin/static/logo.svg') }}" width="110" height="32" alt="Tabler"
                     class="navbar-brand-image">
             </a>
@@ -304,6 +304,12 @@
                     <div class="dropdown-menu {{ request()->routeIs('admin.kyc.*') ? 'show' : '' }} ">
                         <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
+
+                                <a class="dropdown-item {{ request()->routeIs('admin.kyc.submission.*') ? 'drop-down-active' : '' }}"
+                                    href="{{ route('admin.kyc.submission.index') }}">
+                                    List
+                                </a>
+
                                 <a class="dropdown-item {{ request()->routeIs('admin.kyc.setting.*') ? 'drop-down-active' : '' }}"
                                     href="{{ route('admin.kyc.setting.index') }}">
                                     Settings
@@ -316,10 +322,6 @@
                         </div>
                     </div>
                 </li>
-
-
-
-
 
                 {{-- <li class="nav-item active dropdown">
                     <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Title -->
-    <title>Login</title>
+    <title>Kyc Verification</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="assets/images/logo/favicon-two.png">
 
@@ -42,19 +42,19 @@
 
                             <ul class="breadcrumb-list flx-align gap-2 mb-2 justify-content-center">
                                 <li class="breadcrumb-list__item font-14 text-body">
-                                    <a href="index.html"
-                                        class="breadcrumb-list__link text-body hover-text-main">Home</a>
+                                    <a href="{{ route('home.index') }}"
+                                        class="breadcrumb-list__link text-body hover-text-main">{{ __('Home') }}</a>
                                 </li>
                                 <li class="breadcrumb-list__item font-14 text-body">
                                     <span class="breadcrumb-list__icon font-10"><i
                                             class="fas fa-chevron-right"></i></span>
                                 </li>
                                 <li class="breadcrumb-list__item font-14 text-body">
-                                    <span class="breadcrumb-list__text">Login</span>
+                                    <span class="breadcrumb-list__text"> {{ __('Kyc Verification') }} </span>
                                 </li>
                             </ul>
-
-                            <h3 class="breadcrumb-two-content__title mb-0 text-capitalize">Login</h3>
+                            <h3 class="breadcrumb-two-content__title mb-0 text-capitalize"> {{ __('Kyc Verification') }}
+                            </h3>
                         </div>
                     </div>
                 </div>
@@ -62,9 +62,54 @@
         </div>
     </section>
 
+    <section class="wsus__login padding-y-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-5 col-xl-6 col-md-9 col-lg-7 m-auto">
+                    <div class="wsus__login_area">
+                        <h2> {{ __('KYC Verification!') }} </h2>
+                        <p> {{ $kycSetting->instructions }} </p>
+                        <form method="POST" action="{{ route('kyc.store') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <x-user.input-select name="document_type" label="{{ __('Document Type') }}"
+                                        required="{{ true }}">
+                                        <option value="nid">NID</option>
+                                        <option value="passport">Passport</option>
+                                    </x-user.input-select>
+                                </div>
 
+                                <div class="col-xl-12">
+                                    <x-user.input-text type="text" name="document_number"
+                                        label="{{ __('Document Number') }}" required="true" />
+                                </div>
 
-    @include('auth.loginForm')
+                                <div class="col-xl-12">
+                                    <x-user.input-text type="file" multiple name="documents[]" :label="__('Attach Documents')"
+                                        :required="true" />
+                                </div>
+
+                                @if ($errors->has('documents'))
+                                    <p class="text-danger mb-0">{{ $errors->first('documents') }}</p>
+                                @elseif ($errors->has('documents.*'))
+                                    @foreach ($errors->get('documents.*') as $error)
+                                        <p class="text-danger mb-0">{{ $error[0] }}</p>
+                                    @endforeach
+                                @endif
+
+                                <div class="col-xl-12">
+                                    <div class="wsus__login_imput">
+                                        <button type="submit" class="btn btn-main btn-lg">{{ __('Submit') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     @include('user.layout.footer')
     </main>

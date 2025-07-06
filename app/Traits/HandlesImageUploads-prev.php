@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Traits;
+
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -16,23 +18,28 @@ trait HandlesImageUploads
             mkdir($destinationPath, 0755, true);
         }
 
-        // Handle PDF upload (just move, no resize)
-        if ($extension === 'pdf') {
+        // Handle image file
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'])) {
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($file);
+
+            if ($width !== null && $height !== null) {
+                $img->resize($width, $height);
+            }
+
+            $img->save($destinationPath . '/' . $name_gen);
+        }
+        // Handle PDF or other non-image file
+        elseif ($extension === 'pdf') {
             $file->move($destinationPath, $name_gen);
-            return $uploadPath . '/' . $name_gen;
+        } else {
+            // Optionally reject other file types
+            return null;
         }
 
-        // Handle image upload
-        $manager = new ImageManager(new Driver());
-        $img = $manager->read($file);
-
-        if ($width !== null && $height !== null) {
-            $img->resize($width, $height);
-        }
-
-        $img->save($destinationPath . '/' . $name_gen);
         return $uploadPath . '/' . $name_gen;
     }
+
 
     function resizeImage($imagePath, $width, $height)
     {
@@ -57,9 +64,7 @@ trait HandlesImageUploads
             imagealphablending($newImage, false);
             imagesavealpha($newImage, true);
         }
-
         imagecopyresampled($newImage, $image, 0, 0, 0, 0, $width, $height, $originalWidth, $originalHeight);
-
         switch ($type) {
             case IMAGETYPE_JPEG:
                 imagejpeg($newImage, $imagePath, 90);
@@ -71,11 +76,11 @@ trait HandlesImageUploads
                 imagegif($newImage, $imagePath);
                 break;
         }
-
         imagedestroy($image);
         imagedestroy($newImage);
         return true;
     }
+
 
     public function deleteImage($photo)
     {

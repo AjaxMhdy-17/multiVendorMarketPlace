@@ -4,6 +4,24 @@
 
 @section('content')
 
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        <div class="alert-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon alert-icon icon-2">
+                <path d="M12 9v4"></path>
+                <path
+                    d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
+                </path>
+                <path d="M12 16h.01"></path>
+            </svg>
+            <span>
+                {{ __('Your Kyc Request is Pending. You Will Get A Notification When It Will Approved !') }}
+            </span>
+        </div>
+        <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+    </div>
+
     <div class="profile">
         <div class="row gy-4">
             <div class="col-xxl-3 col-xl-4">
@@ -48,7 +66,7 @@
                                         </div>
 
                                         <div class="col-sm-6 col-xs-6">
-                                            <x-user.input-select name="country" :label="__('country')">
+                                            <x-user.input-select name="country" label="{{ __('Country') }}">
                                                 @foreach (config('options.countries') as $key => $value)
                                                     <option @selected($user->country == $value) value="{{ $value }}">
                                                         {{ $value }}

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\KycSettingController;
+use App\Http\Controllers\Admin\KycSubmissionController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Admin\RoleUserController;
@@ -62,5 +63,7 @@ Route::middleware('auth:admin')->prefix('admin')->as('admin.')->group(function (
     Route::prefix('kyc')->as('kyc.')->group(function () {
         Route::get('setting', [KycSettingController::class, 'index'])->name('setting.index');
         Route::put('setting', [KycSettingController::class, 'store'])->name('setting.store');
+
+        Route::resource('submission', KycSubmissionController::class);
     });
 });

@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function kyc()
+    {
+        return $this->hasMany(KycVerification::class, 'user_id')->orderBy('created_at', 'desc');
+    }
 }
