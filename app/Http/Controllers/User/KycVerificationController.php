@@ -17,7 +17,6 @@ class KycVerificationController extends Controller
     public function index()
     {
         $data['kycSetting'] = KycSetting::first();
-
         return view('user.pages.kyc.index', $data);
     }
 
@@ -29,6 +28,9 @@ class KycVerificationController extends Controller
             'documents' => 'required|array',
             'documents.*' => 'required|file|mimes:jpeg,png,jpg|max:5000',
         ]);
+
+
+        $kycSetting = KycSetting::first();
         $user_id = Auth::guard('web')->user()->id;
         $kyc = new KycVerification();
         $kyc->user_id = $user_id;
@@ -38,6 +40,11 @@ class KycVerificationController extends Controller
             $path = $this->uploadImage($doc, 'uploads/user/kyc', 800, 800);
             $kyc->documents = $kyc->documents . '::' . $path;
         }
+
+        if ($kycSetting->auto_approve == 1) {
+            $kyc->status = 'approved';
+        }
+
         $kyc->save();
         NotificationService::CREATED('Kyc Documents Has Been Uploaded!');
         return redirect()->route('profile.user.edit', ['user' => $user_id]);

@@ -75,8 +75,12 @@
                                 <div class="col-xl-12">
                                     <x-user.input-select name="document_type" label="{{ __('Document Type') }}"
                                         required="{{ true }}">
-                                        <option value="nid">NID</option>
-                                        <option value="passport">Passport</option>
+                                        @if ($kycSetting->nid_verification == 1)
+                                            <option value="nid">NID</option>
+                                        @endif
+                                        @if ($kycSetting->passport_verification == 1)
+                                            <option value="passport">Passport</option>
+                                        @endif
                                     </x-user.input-select>
                                 </div>
 
