@@ -23,21 +23,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // $this->call([
-        //     RolePermissionSeeder::class,
-        //     AdminSeeder::class,
-        //     UserSeeder::class,
-        // ]);
-
-
-        for ($i = 0; $i <= 1000; $i++) {
-            if ($i != 8) {
-                $user = new User();
-                $user->name = 'user-' . $i;
-                $user->email = 'user' . $i . '@gmail.com';
-                $user->password = bcrypt('11111111');
-                $user->save();
-            }
-        }
+        $this->call([
+            RolePermissionSeeder::class,
+            AdminSeeder::class,
+            UserSeeder::class,
+        ]);
     }
 }

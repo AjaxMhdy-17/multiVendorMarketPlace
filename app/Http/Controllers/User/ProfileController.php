@@ -38,7 +38,7 @@ class ProfileController extends Controller
 
     public function edit(string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('kyc:id,status')->findOrFail($id);
         return view('user.panel.profile.index', ['user' => $user]);
     }
 

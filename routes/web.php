@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('user', ProfileController::class);
     });
 
-    Route::resource('kyc', KycVerificationController::class);
+    Route::resource('kyc', KycVerificationController::class)->middleware('kyc');
 });
 
 

@@ -49,6 +49,6 @@ class User extends Authenticatable
 
     public function kyc()
     {
-        return $this->hasMany(KycVerification::class, 'user_id')->orderBy('created_at', 'desc');
+        return $this->hasOne(KycVerification::class, 'user_id')->orderBy('created_at', 'desc');
     }
 }

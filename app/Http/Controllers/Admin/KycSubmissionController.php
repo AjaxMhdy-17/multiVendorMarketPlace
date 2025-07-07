@@ -100,6 +100,9 @@ class KycSubmissionController extends Controller
         $kyc = KycVerification::with('user')->findOrFail($id);
         if ($request->has('approve')) {
             $kyc->status = 'approved';
+            $kyc->user->update([
+                'kyc_status' => 1
+            ]);
             MailSenderService::sendMail(
                 name: $kyc->user->name,
                 mailSubject: "Your Kyc Request Has Been Approved",
@@ -108,6 +111,9 @@ class KycSubmissionController extends Controller
             );
         } else if ($request->has('reject')) {
             $kyc->status = 'rejected';
+            $kyc->user->update([
+                'kyc_status' => 0
+            ]);
             MailSenderService::sendMail(
                 name: $kyc->user->name,
                 mailSubject: "Your Kyc Request Has Been Rejected",
