@@ -307,7 +307,10 @@
 
                                 <a class="dropdown-item {{ request()->routeIs('admin.kyc.submission.*') ? 'drop-down-active' : '' }}"
                                     href="{{ route('admin.kyc.submission.index') }}">
-                                    List
+                                    Submission @if (pendingKycCount() > 0)
+                                        <span class="badge badge-outline text-indigo ms-auto">
+                                            {{ pendingKycCount() }}</span>
+                                    @endif
                                 </a>
 
                                 <a class="dropdown-item {{ request()->routeIs('admin.kyc.setting.*') ? 'drop-down-active' : '' }}"

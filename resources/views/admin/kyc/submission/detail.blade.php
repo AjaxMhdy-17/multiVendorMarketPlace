@@ -34,48 +34,57 @@
                         <div class="card-header">
                             <h3 class="card-title">{{ __($title) }}</h3>
                         </div>
-                        <form action="{{ route('admin.kyc.setting.store') }}" method="post">
+                        <form action="{{ route('admin.kyc.submission.update', ['submission' => $kyc->id]) }}"
+                            method="post">
                             @csrf
                             @method('put')
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div>
-                                            <x-admin.input-toggle name="nid_verification"
-                                                checked="{{ $kycSetting?->nid_verification ?? false }}"
-                                                label="Nid Verification" />
-                                        </div>
+                                        <p class="h4">User Details</p>
+                                        <address>
+                                            {{ $kyc->user->name }}<br>
+                                            {{ $kyc->user->email }}<br>
+                                        </address>
                                     </div>
                                     <div class="col-md-6">
-                                        <div>
-                                            <x-admin.input-toggle name="passport_verification" label="Passport Verification"
-                                                checked="{{ $kycSetting?->passport_verification ?? false }}" />
-                                        </div>
+                                        <p class="h4">Document Type</p>
+                                        <p>{{ $kyc->document_type }}</p>
                                     </div>
+                                    <div class="col-md-6">
+                                        <p class="h4">Document Number</p>
+                                        <p>{{ $kyc->document_number }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="h4">Document Status</p>
+                                        <p class="badge badge-outline text-teal">{{ $kyc->status }}</p>
+                                    </div>
+
                                     <div class="col-12">
-                                        <x-admin.input-textarea name="instructions" label="Instructions"
-                                            :value="$kycSetting?->instructions" />
+                                        <p class="h4">Document Photo</p>
+                                        <div class="d-flex gap-3">
+                                            @foreach ($photos as $photo)
+                                                <div class="w__160__h__120">
+                                                    <img src="{{ asset($photo) }}" class="img-fluid" alt="document-image" />
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <x-admin.input-select name="auto_approve" label="{{ __('Auto Approve') }}">
-                                            <option @selected($kycSetting?->auto_approve == 0) value="0">Disable</option>
-                                            <option @selected($kycSetting?->auto_approve == 1) value="1">Enable</option>
-                                        </x-admin.input-select>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <x-admin.input-select name="status" label="{{ __('Kyc Status') }}">
-                                            <option @selected($kycSetting?->status == 1) value="1">Active</option>
-                                            <option @selected($kycSetting?->status == 0) value="0">Inactive</option>
-                                        </x-admin.input-select>
-                                    </div>
+                                    @if ($kyc->reject_reason != null)
+                                        <div class="col-12">
+                                            <p class="h4">Document Reject Reason</p>
+                                            <p>{{ $kyc->reject_reason }}</p>
+                                        </div>
+                                    @endif
 
                                 </div>
-
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">{{ __('CREATE') }}</button>
+                                <button type="submit" @disabled($kyc->status == 'approved') name="approve"
+                                    class="btn btn-primary">{{ __('Approve') }}</button>
+                                <button type="submit" @disabled($kyc->status == 'rejected') name="reject"
+                                    class="btn btn-primary">{{ __('Reject') }}</button>
                             </div>
                         </form>
                     </div>
@@ -84,5 +93,12 @@
         </div>
     </div>
 
-
 @endsection
+
+@push('css')
+    <style>
+        .w__160__h__120 {
+            width: 180px;
+        }
+    </style>
+@endpush

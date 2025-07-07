@@ -26,7 +26,7 @@ class KycVerificationController extends Controller
             'document_type' => 'required|string|in:nid,passport',
             'document_number' => 'required|string|max:40',
             'documents' => 'required|array',
-            'documents.*' => 'required|file|mimes:jpeg,png,jpg,pdf|max:5000',
+            'documents.*' => 'required|file|mimes:jpeg,png,jpg|max:5000',
         ]);
         $user_id = Auth::guard('web')->user()->id;
         $kyc = new KycVerification();

@@ -3,28 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\KycSetting;
 use App\Models\KycVerification;
-use App\Models\User;
+use App\Services\MailSenderService;
 use App\Services\NotificationService;
 use App\Traits\HandlesImageUploads;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class KycSubmissionController extends Controller
 {
-
     use HandlesImageUploads;
-
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-
-
         if ($request->ajax()) {
             $kycs = KycVerification::with(['user:id,name'])->select(['id', 'user_id', 'document_type', 'document_number', 'status', 'created_at'])->orderBy('created_at', 'desc');
             return DataTables::eloquent($kycs)
@@ -47,9 +38,9 @@ class KycSubmissionController extends Controller
                 ->editColumn('created_at', function ($kyc) {
                     return Carbon::parse($kyc->created_at)->format('Y-m-d');
                 })
-                ->filterColumn('document_number', function ($query, $keyword) {
-                    $query->where('kyc_verifications.document_number', 'like', "%{$keyword}%");
-                })
+                // ->filterColumn('document_number', function ($query, $keyword) {
+                //     $query->where('kyc_verifications.document_number', 'like', "%{$keyword}%");
+                // })
                 ->editColumn('document_number', function ($kyc) {
                     return  $kyc->document_number;
                 })
@@ -90,35 +81,45 @@ class KycSubmissionController extends Controller
                 ->rawColumns(['name', 'action', 'status', 'checkbox'])
                 ->make(true);
         }
-
         $data['title'] = "Kyc Submissions";
         $data['kycVerifications'] = KycVerification::orderBy('created_at', 'desc')->get();
         return view('admin.kyc.submission.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        $data['title'] = "Kyc Detail";
+        $data['kyc'] = KycVerification::with('user')->findOrFail($id);
+        preg_match_all('/::(uploads\/[^:]+)/',  $data['kyc']->documents, $matches);
+        $data['photos'] = $matches[1];
+        return view('admin.kyc.submission.detail', $data);
     }
+
+    public function update(Request $request, string $id)
+    {
+        $kyc = KycVerification::with('user')->findOrFail($id);
+        if ($request->has('approve')) {
+            $kyc->status = 'approved';
+            MailSenderService::sendMail(
+                name: $kyc->user->name,
+                mailSubject: "Your Kyc Request Has Been Approved",
+                content: "Kyc Approved",
+                toMail: $kyc->user->email
+            );
+        } else if ($request->has('reject')) {
+            $kyc->status = 'rejected';
+            MailSenderService::sendMail(
+                name: $kyc->user->name,
+                mailSubject: "Your Kyc Request Has Been Rejected",
+                content: "Kyc Rejected",
+                toMail: $kyc->user->email
+            );
+        }
+        $kyc->save();
+        NotificationService::UPDATED('KYC Status Updated!');
+        return back();
+    }
+
 
     public function destroy(string $id)
     {
@@ -134,12 +135,11 @@ class KycSubmissionController extends Controller
         if (empty($ids)) {
             return redirect()->back()->with('error', 'No items selected for deletion.');
         }
-        $users = User::whereIn('id', $ids)->get();
-        foreach ($users as $user) {
-            $this->deleteImage($user->photo);
-            $user->delete();
+        $kycs = KycVerification::whereIn('id', $ids)->get();
+        foreach ($kycs as $kyc) {
+            $this->deleteImage($kyc->photo);
+            $kyc->delete();
         }
-        // NotificationService::DELETED("Selected User Deleted!");
         return redirect()->route('admin.kyc.submission.index');
     }
 }

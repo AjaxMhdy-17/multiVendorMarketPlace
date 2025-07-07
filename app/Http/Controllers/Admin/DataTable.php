@@ -13,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class KycSubmissionController extends Controller
+class DataTable extends Controller
 {
 
     use HandlesImageUploads;
@@ -81,9 +81,7 @@ class KycSubmissionController extends Controller
                 ->rawColumns(['action', 'status', 'photo', 'checkbox'])
                 ->make(true);
         }
-
         $data['title'] = "Kyc Submissions";
-        $data['kycVerifications'] = User::all();
         return view('admin.kyc.submission.index', $data);
     }
 
@@ -108,7 +106,9 @@ class KycSubmissionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return "hey";
+        // $data['title'] = "Kyc Details";
+        // return view('admin.kyc.submission.detail', $data);
     }
 
     /**
