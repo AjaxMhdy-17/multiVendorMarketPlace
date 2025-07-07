@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\KycSubmissionController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Admin\RoleUserController;
+use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')->prefix('admin')->as('admin.')->group(function () {
@@ -67,4 +68,6 @@ Route::middleware('auth:admin')->prefix('admin')->as('admin.')->group(function (
         Route::post('submission/bulk-delete', [KycSubmissionController::class, 'bulkDelete'])->name('submission.bulk-delete');
         Route::resource('submission', KycSubmissionController::class);
     });
+
+    Route::resource('setting', SettingController::class);
 });
