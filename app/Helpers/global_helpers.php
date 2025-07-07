@@ -18,3 +18,11 @@ if (!function_exists('pendingKycCount')) {
         return KycVerification::where('status', 'pending')->count();
     }
 }
+
+
+if (!function_exists('isAuthor')) {
+    function isAuthor()
+    {
+        return user()->user_type == 'author' && user()->kyc_status == 1;
+    }
+}

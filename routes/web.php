@@ -21,6 +21,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('kyc', KycVerificationController::class)->middleware('kyc');
+
+    Route::middleware('isAuthor')->as('author.')->group(function () {});
 });
 
 

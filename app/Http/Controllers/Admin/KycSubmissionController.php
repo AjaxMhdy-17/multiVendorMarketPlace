@@ -101,7 +101,8 @@ class KycSubmissionController extends Controller
         if ($request->has('approve')) {
             $kyc->status = 'approved';
             $kyc->user->update([
-                'kyc_status' => 1
+                'kyc_status' => 1,
+                'user_type' => 'author'
             ]);
             MailSenderService::sendMail(
                 name: $kyc->user->name,
@@ -112,7 +113,8 @@ class KycSubmissionController extends Controller
         } else if ($request->has('reject')) {
             $kyc->status = 'rejected';
             $kyc->user->update([
-                'kyc_status' => 0
+                'kyc_status' => 0,
+                'user_type' => 'user'
             ]);
             MailSenderService::sendMail(
                 name: $kyc->user->name,

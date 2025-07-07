@@ -29,6 +29,18 @@
                     <span class="text">Profile</span>
                 </a>
             </li>
+
+            @if (isAuthor())
+                <li class="sidebar-list__item">
+                    <a href="#" class="sidebar-list__link">
+                        <span class="sidebar-list__icon">
+                            <i class="ti ti-brand-codesandbox"></i>
+                        </span>
+                        <span class="text">Product</span>
+                    </a>
+                </li>
+            @endif
+
             <li class="sidebar-list__item">
                 <a href="#" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
