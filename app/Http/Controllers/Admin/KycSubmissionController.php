@@ -83,7 +83,7 @@ class KycSubmissionController extends Controller
         }
         $data['title'] = "Kyc Submissions";
         $data['kycVerifications'] = KycVerification::orderBy('created_at', 'desc')->get();
-        return view('admin.kyc.submission.index', $data);
+        return view('admin.kycManagement.submission.index', $data);
     }
 
     public function show(string $id)
@@ -92,7 +92,7 @@ class KycSubmissionController extends Controller
         $data['kyc'] = KycVerification::with('user')->findOrFail($id);
         preg_match_all('/::(uploads\/[^:]+)/',  $data['kyc']->documents, $matches);
         $data['photos'] = $matches[1];
-        return view('admin.kyc.submission.detail', $data);
+        return view('admin.kycManagement.submission.detail', $data);
     }
 
     public function update(Request $request, string $id)

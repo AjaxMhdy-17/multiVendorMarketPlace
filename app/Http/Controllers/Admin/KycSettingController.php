@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\KycSetting;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 
 class KycSettingController extends Controller
 {
@@ -14,7 +13,7 @@ class KycSettingController extends Controller
     {
         $data['title'] = "Kyc Setting";
         $data['kycSetting'] = KycSetting::first();
-        return view('admin.kyc.setting.index', $data);
+        return view('admin.kycManagement.setting.index', $data);
     }
 
     public function store(Request $request)
@@ -33,7 +32,6 @@ class KycSettingController extends Controller
 
         NotificationService::UPDATED("Kyc Settings Successfully!");
         return back();
-        // return redirect()->route('admin.roles.user.index');
     }
 
     public function destroy(string $id)

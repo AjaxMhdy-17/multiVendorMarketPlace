@@ -19,9 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('profile')->as('profile.')->group(function () {
         Route::resource('user', ProfileController::class);
     });
-
     Route::resource('kyc', KycVerificationController::class)->middleware('kyc');
-
     Route::middleware('isAuthor')->as('author.')->group(function () {});
 });
 

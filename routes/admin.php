@@ -9,12 +9,14 @@ use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\KycSettingController;
 use App\Http\Controllers\Admin\KycSubmissionController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Admin\RoleUserController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')->prefix('admin')->as('admin.')->group(function () {
@@ -49,25 +51,24 @@ Route::middleware('auth:admin')->prefix('admin')->as('admin.')->group(function (
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
-    Route::resource('profile', ProfileController::class);
-
-    Route::prefix('roles')->as('roles.')->group(function () {
-        Route::resource('permissions', RolePermissionController::class);
-        Route::resource('user', RoleUserController::class);
-    });
-
     Route::get('/dashboard', function () {
         $data['title'] = "dashboard";
         return view('admin.dashboard.index', $data);
     })->name('dashboard');
-
+    Route::resource('profile', ProfileController::class);
+    Route::prefix('roles')->as('roles.')->group(function () {
+        Route::resource('permissions', RolePermissionController::class);
+        Route::resource('user', RoleUserController::class);
+    });
     Route::prefix('kyc')->as('kyc.')->group(function () {
         Route::get('setting', [KycSettingController::class, 'index'])->name('setting.index');
         Route::put('setting', [KycSettingController::class, 'store'])->name('setting.store');
-
         Route::post('submission/bulk-delete', [KycSubmissionController::class, 'bulkDelete'])->name('submission.bulk-delete');
         Route::resource('submission', KycSubmissionController::class);
     });
-
+    Route::prefix('category')->as('category.')->group(function () {
+        Route::resource('all', CategoryController::class);
+        Route::resource('sub', SubCategoryController::class);
+    });
     Route::resource('setting', SettingController::class);
 });

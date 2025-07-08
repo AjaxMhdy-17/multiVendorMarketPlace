@@ -7,6 +7,9 @@
 
 
 
+<script src="{{ asset('assets/admin/dist/js/bootstrap-tagsinput.js') }}" defer></script>
+
+
 <!-- Tabler Core -->
 <script src="{{ asset('assets/admin/dist/js/tabler.min.js?1692870487') }}" defer></script>
 <script src="{{ asset('assets/admin/dist/js/demo.min.js?1692870487') }}" defer></script>
