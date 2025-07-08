@@ -349,8 +349,8 @@
                                     href="{{ route('admin.category.all.index') }}">
                                     All Category
                                 </a>
-                                <a class="dropdown-item {{ request()->routeIs('admin.kyc.setting.*') ? 'drop-down-active' : '' }}"
-                                    href="{{ route('admin.kyc.setting.index') }}">
+                                <a class="dropdown-item {{ request()->routeIs('admin.category.sub.*') ? 'drop-down-active' : '' }}"
+                                    href="{{ route('admin.category.sub.index') }}">
                                     Sub Category
                                 </a>
                             </div>

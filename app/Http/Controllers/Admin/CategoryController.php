@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\KycVerification;
 use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -72,7 +71,6 @@ class CategoryController extends Controller
         $data['title'] = "Category Create";
         return view('admin.categoryManagement.allCategory.create', $data);
     }
-
 
     public function store(Request $request)
     {
