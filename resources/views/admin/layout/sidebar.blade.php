@@ -243,44 +243,46 @@
                     </a>
                 </li>
 
-                <li class="nav-item active dropdown">
-                    <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}"
-                        href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
-                        aria-expanded="true">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                <path
-                                    d="M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                <path
-                                    d="M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                <path
-                                    d="M14 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-title">
-                            Roles
-                        </span>
-                    </a>
-                    <div class="dropdown-menu {{ request()->routeIs('admin.roles.*') ? 'show' : '' }} ">
-                        <div class="dropdown-menu-columns">
-                            <div class="dropdown-menu-column">
-                                <a class="dropdown-item {{ request()->routeIs('admin.roles.user.*') ? 'drop-down-active' : '' }}"
-                                    href="{{ route('admin.roles.user.index') }}">
-                                    Users
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('admin.roles.permissions.*') ? 'drop-down-active' : '' }}"
-                                    href="{{ route('admin.roles.permissions.index') }}">
-                                    Permissions
-                                </a>
+                @if (isSuperAdmin())
+                    <li class="nav-item active dropdown">
+                        <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}"
+                            href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false"
+                            role="button" aria-expanded="true">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                    <path
+                                        d="M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                    <path
+                                        d="M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                    <path
+                                        d="M14 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Roles
+                            </span>
+                        </a>
+                        <div class="dropdown-menu {{ request()->routeIs('admin.roles.*') ? 'show' : '' }} ">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <a class="dropdown-item {{ request()->routeIs('admin.roles.user.*') ? 'drop-down-active' : '' }}"
+                                        href="{{ route('admin.roles.user.index') }}">
+                                        Users
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('admin.roles.permissions.*') ? 'drop-down-active' : '' }}"
+                                        href="{{ route('admin.roles.permissions.index') }}">
+                                        Permissions
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                @endif
 
 
 
@@ -320,43 +322,46 @@
                     </div>
                 </li>
 
+                {{-- @dd(auth()->guard('admin')->user()->hasAnyPermission('manage categoires')) --}}
 
-                <li class="nav-item active dropdown">
-                    <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.category.*') ? 'active' : '' }}"
-                        href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
-                        aria-expanded="true">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-align-box-center-middle">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M3 19v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-                                <path d="M11 15h2" />
-                                <path d="M9 12h6" />
-                                <path d="M10 9h4" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-title">
-                            Categories
-                        </span>
-                    </a>
-                    <div class="dropdown-menu {{ request()->routeIs('admin.category.*') ? 'show' : '' }} ">
-                        <div class="dropdown-menu-columns">
-                            <div class="dropdown-menu-column">
-                                <a class="dropdown-item {{ request()->routeIs('admin.category.all.*') ? 'drop-down-active' : '' }}"
-                                    href="{{ route('admin.category.all.index') }}">
-                                    All Category
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('admin.category.sub.*') ? 'drop-down-active' : '' }}"
-                                    href="{{ route('admin.category.sub.index') }}">
-                                    Sub Category
-                                </a>
+                @if (canAccess(['manage categories']))
+                    <li class="nav-item active dropdown">
+                        <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.category.*') ? 'active' : '' }}"
+                            href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false"
+                            role="button" aria-expanded="true">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-align-box-center-middle">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M3 19v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                                    <path d="M11 15h2" />
+                                    <path d="M9 12h6" />
+                                    <path d="M10 9h4" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Categories
+                            </span>
+                        </a>
+                        <div class="dropdown-menu {{ request()->routeIs('admin.category.*') ? 'show' : '' }} ">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <a class="dropdown-item {{ request()->routeIs('admin.category.all.*') ? 'drop-down-active' : '' }}"
+                                        href="{{ route('admin.category.all.index') }}">
+                                        All Category
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('admin.category.sub.*') ? 'drop-down-active' : '' }}"
+                                        href="{{ route('admin.category.sub.index') }}">
+                                        Sub Category
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                @endif
 
 
 

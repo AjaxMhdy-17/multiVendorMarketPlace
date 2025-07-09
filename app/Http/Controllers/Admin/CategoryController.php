@@ -7,12 +7,20 @@ use App\Models\Category;
 use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Yajra\DataTables\Facades\DataTables;
 
 use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class CategoryController extends Controller implements HasMiddleware
 {
+
+    static function Middleware()
+    {
+        return [new Middleware('permission:manage categories')];
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
