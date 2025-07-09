@@ -42,9 +42,8 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>name</th>
-                                            <th>icon</th>
-                                            <th>file_types</th>
+                                            <th>category</th>
+                                            <th>sub category</th>
                                             <th>created At</th>
                                             <th>action</th>
                                         </tr>
@@ -110,7 +109,7 @@
                 processing: true,
                 responsive: true,
                 ajax: {
-                    url: "{{ route('admin.category.all.index') }}"
+                    url: "{{ route('admin.category.sub.index') }}"
                 },
                 columns: [{
                         data: 'DT_RowIndex',
@@ -121,19 +120,14 @@
                         className: "text-center"
                     },
                     {
+                        data: 'category_id',
+                        name: 'category_id',
+                        className: "text-center ",
+                    },
+                    {
                         data: 'name',
                         name: 'name',
                         className: "text-center ",
-                    },
-                    {
-                        data: 'icon',
-                        name: 'icon',
-                        className: "text-center ",
-                    },
-                    {
-                        data: 'file_types',
-                        name: 'file_types',
-                        className: "text-center",
                     },
                     {
                         data: 'created_at',

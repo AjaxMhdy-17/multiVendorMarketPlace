@@ -33,28 +33,26 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">{{ __($title) }}</h3>
-                            <a href="{{ route('admin.category.all.index') }}"
+                            <a href="{{ route('admin.category.sub.index') }}"
                                 class="btn btn-primary">{{ __('BACK') }}</a>
                         </div>
-                        <form action="{{ route('admin.category.all.update', ['all' => $category->id]) }}" method="post">
+                        <form action="{{ route('admin.category.sub.update', ['sub' => $subCategory->id]) }}" method="post">
                             @csrf
-                            @method('put')
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <x-admin.input-icon name="icon" :value="$category->icon" :label="__('Category Icon')" />
+                                        <x-admin.input-select name="category_id" label="{{ __('Select Category') }}">
+                                            @foreach ($categories as $category)
+                                                <option @selected($category->id == $subCategory->category_id) value="{{ $category->id }}">
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </x-admin.input-select>
                                     </div>
-                                    <div class="col-md-6">
-                                        <x-admin.input-text type="text" name="name" :value="$category->name"
-                                            label="{{ __('Category Name') }}" />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">{{ __('File Types') }}</label>
-                                            <input id="input-tags" name="file_types" value="{{ $category->file_types }}"
-                                                autocomplete="off" />
-                                            <x-input-error :messages="$errors->get('file_types')" class="mt-1" />
-                                        </div>
+                                    <div class="col-md-12">
+                                        <x-admin.input-text type="text" name="name"
+                                            label="{{ __('Sub Category Name') }}" :value="$subCategory->name" />
                                     </div>
                                 </div>
                             </div>
@@ -127,9 +125,6 @@
             }
         ];
 
-        const initialValue = document.getElementById('input-tags').value;
-        const initialItems = initialValue ? initialValue.split(',') : [];
-
         new TomSelect("#input-tags", {
             plugins: {
                 remove_button: {
@@ -137,23 +132,19 @@
                 }
             },
             options: availableOptions,
-            items: initialItems,
+            items: [],
             persist: false,
             createOnBlur: true,
             create: true,
             hideSelected: true
         });
     </script>
-
-
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             new EzIconPicker({
                 selector: '.icon-picker'
             });
         });
-
         document.addEventListener('DOMContentLoaded', () => {
             const prevBtn = document.querySelector(".ez_prev");
             const nextBtn = document.querySelector(".ez_next");

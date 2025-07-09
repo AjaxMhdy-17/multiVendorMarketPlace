@@ -16,18 +16,18 @@ class SubCategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $categories = Category::orderBy('created_at', 'desc');
+            $categories = SubCategory::with('category')->orderBy('created_at', 'desc');
             return DataTables::eloquent($categories)
                 ->addIndexColumn()
-                ->editColumn('icon', function ($category) {
-                    return '<div class="ez_icons"><i class="' . e($category->icon) . '"></i></div>';
+                ->editColumn('category_id', function ($subCategory) {
+                    return $subCategory->category->name;
                 })
                 ->editColumn('created_at', function ($category) {
                     return Carbon::parse($category->created_at)->format('Y-m-d');
                 })
                 ->addColumn('action', function ($category) {
-                    $editUrl = route('admin.category.all.edit', ['all' => $category->id]);
-                    $deleteUrl = route('admin.category.all.destroy', ['all' => $category->id]);
+                    $editUrl = route('admin.category.sub.edit', ['sub' => $category->id]);
+                    $deleteUrl = route('admin.category.sub.destroy', ['sub' => $category->id]);
                     return '
                         <div class="btn-list flex-nowrap">
                             <div class="dropdown">
@@ -59,24 +59,18 @@ class SubCategoryController extends Controller
                             </div>
                         </div>';
                 })
-                ->rawColumns(['name', 'action', 'icon'])
+                ->rawColumns(['created_at', 'action'])
                 ->make(true);
         }
         $data['title'] = "Sub Category All";
         return view('admin.categoryManagement.subCategory.index', $data);
     }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $data['title'] = "Sub Category Create";
         $data['categories'] = Category::all();
         return view('admin.categoryManagement.subCategory.create', $data);
     }
-
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -90,19 +84,15 @@ class SubCategoryController extends Controller
         NotificationService::CREATED("Sub Category Created!");
         return back();
     }
-
-
-    public function show(string $id)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $data['title'] = "Sub Category Edit";
+        $data['categories'] = Category::all();
+        $data['subCategory'] = SubCategory::findOrFail($id);
+        return view('admin.categoryManagement.subCategory.edit', $data);
     }
 
     /**
@@ -110,7 +100,14 @@ class SubCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->validate([
+            'category_id' => 'required',
+            'name' => 'required',
+        ]);
+        $subCategory = SubCategory::findOrFail($id);
+        $subCategory->update($data);
+        NotificationService::UPDATED("Sub Category Updated!");
+        return back();
     }
 
     /**
@@ -118,6 +115,9 @@ class SubCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $subCategory = SubCategory::findOrFail($id);
+        $subCategory->delete();
+        NotificationService::UPDATED("Sub Category Deleted!");
+        return back();
     }
 }
