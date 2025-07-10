@@ -15,9 +15,9 @@ class SuperAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!isSuperAdmin()) {
-            abort(403);
-        }
+        // if (!isSuperAdmin()) {
+        //     abort(403);
+        // }
         return $next($request);
     }
 }

@@ -19,5 +19,8 @@
 <!-- select 2  -->
 <script src="{{ asset('assets/user/js/select2.min.js') }}"></script>
 
+<script src="{{ asset('assets/user/js/tinymce.min.js') }}" referrerpolicy="origin"></script>
+
+
 <!-- main js -->
 <script src="{{ asset('assets/user/js/main.js') }}"></script>

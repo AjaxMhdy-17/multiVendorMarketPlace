@@ -32,11 +32,12 @@
 
             @if (isAuthor())
                 <li class="sidebar-list__item">
-                    <a href="#" class="sidebar-list__link">
+                    <a href="{{ route('author.item.index') }}"
+                        class="sidebar-list__link {{ request()->routeIs('author.item.*') ? 'active' : '' }}">
                         <span class="sidebar-list__icon">
                             <i class="ti ti-brand-codesandbox"></i>
                         </span>
-                        <span class="text">Product</span>
+                        <span class="text">My Items</span>
                     </a>
                 </li>
             @endif

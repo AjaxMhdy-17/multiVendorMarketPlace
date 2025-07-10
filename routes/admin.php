@@ -56,6 +56,7 @@ Route::middleware('auth:admin')->prefix('admin')->as('admin.')->group(function (
         return view('admin.dashboard.index', $data);
     })->name('dashboard');
     Route::resource('profile', ProfileController::class);
+    
     Route::middleware('superAdmin')->prefix('roles')->as('roles.')->group(function () {
         Route::resource('permissions', RolePermissionController::class);
         Route::resource('user', RoleUserController::class);

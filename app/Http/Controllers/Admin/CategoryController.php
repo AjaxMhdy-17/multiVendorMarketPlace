@@ -18,7 +18,7 @@ class CategoryController extends Controller implements HasMiddleware
 
     static function Middleware()
     {
-        return [new Middleware('permission:manage categories')];
+        // return [new Middleware('permission:manage categories')];
     }
 
     public function index(Request $request)

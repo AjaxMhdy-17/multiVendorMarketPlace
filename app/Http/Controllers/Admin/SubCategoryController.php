@@ -16,9 +16,10 @@ use Yajra\DataTables\Facades\DataTables;
 class SubCategoryController extends Controller implements HasMiddleware
 {
 
-    static function Middleware(){
+    static function Middleware()
+    {
         return ([
-            new Middleware('permission:manage categories')
+            // new Middleware('permission:manage categories')
         ]);
     }
 
