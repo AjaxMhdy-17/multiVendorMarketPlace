@@ -13,7 +13,7 @@
                     <x-user.input-text type="text" name="name" :label="__('Name')" :required="true" />
                 </div>
                 <div class="col-12">
-                    <x-user.textarea name="description" :label="__('Description')" :required="true" id="tiny" />
+                    <x-user.text-area name="description" :label="__('Description')" :required="true" id="tiny" />
                 </div>
             </div>
             <button type="button" class="btn btn-main btn-md mt-2">Save

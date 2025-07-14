@@ -51,10 +51,14 @@ Route::middleware('auth:admin')->prefix('admin')->as('admin.')->group(function (
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+        
     Route::get('/dashboard', function () {
         $data['title'] = "dashboard";
         return view('admin.dashboard.index', $data);
     })->name('dashboard');
+
+
     Route::resource('profile', ProfileController::class);
     
     Route::middleware('superAdmin')->prefix('roles')->as('roles.')->group(function () {

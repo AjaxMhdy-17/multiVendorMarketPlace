@@ -20,7 +20,7 @@ class SettingController extends Controller
     public function edit(string $id)
     {
         $data['title'] = "Settings";
-        return view('admin.kyc.setting.index', $data);
+        return view('admin.setting.index', $data);
     }
 
     /**
